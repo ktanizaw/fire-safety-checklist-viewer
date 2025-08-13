@@ -14,12 +14,12 @@ import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
-    "\n  fragment ChecklistCard on Checklist {\n    id\n    buildingName\n    address\n    status\n    overallCompletionPercentage\n    lastUpdated\n    pendingActionCount\n  }\n": typeof types.ChecklistCardFragmentDoc,
-    "\n  query checklistIndex {\n    checklists {\n      pendingActionCount\n      ...ChecklistCard\n    }\n  }\n": typeof types.ChecklistIndexDocument,
+    "\n  fragment AssessmentCard on Assessment {\n    id\n    buildingName\n    address\n    status\n    overallCompletionPercentage\n    lastUpdated\n    pendingActionCount\n  }\n": typeof types.AssessmentCardFragmentDoc,
+    "\n  query assessmentIndex {\n    assessments {\n      pendingActionCount\n      ...AssessmentCard\n    }\n  }\n": typeof types.AssessmentIndexDocument,
 };
 const documents: Documents = {
-    "\n  fragment ChecklistCard on Checklist {\n    id\n    buildingName\n    address\n    status\n    overallCompletionPercentage\n    lastUpdated\n    pendingActionCount\n  }\n": types.ChecklistCardFragmentDoc,
-    "\n  query checklistIndex {\n    checklists {\n      pendingActionCount\n      ...ChecklistCard\n    }\n  }\n": types.ChecklistIndexDocument,
+    "\n  fragment AssessmentCard on Assessment {\n    id\n    buildingName\n    address\n    status\n    overallCompletionPercentage\n    lastUpdated\n    pendingActionCount\n  }\n": types.AssessmentCardFragmentDoc,
+    "\n  query assessmentIndex {\n    assessments {\n      pendingActionCount\n      ...AssessmentCard\n    }\n  }\n": types.AssessmentIndexDocument,
 };
 
 /**
@@ -39,11 +39,11 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  fragment ChecklistCard on Checklist {\n    id\n    buildingName\n    address\n    status\n    overallCompletionPercentage\n    lastUpdated\n    pendingActionCount\n  }\n"): (typeof documents)["\n  fragment ChecklistCard on Checklist {\n    id\n    buildingName\n    address\n    status\n    overallCompletionPercentage\n    lastUpdated\n    pendingActionCount\n  }\n"];
+export function graphql(source: "\n  fragment AssessmentCard on Assessment {\n    id\n    buildingName\n    address\n    status\n    overallCompletionPercentage\n    lastUpdated\n    pendingActionCount\n  }\n"): (typeof documents)["\n  fragment AssessmentCard on Assessment {\n    id\n    buildingName\n    address\n    status\n    overallCompletionPercentage\n    lastUpdated\n    pendingActionCount\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query checklistIndex {\n    checklists {\n      pendingActionCount\n      ...ChecklistCard\n    }\n  }\n"): (typeof documents)["\n  query checklistIndex {\n    checklists {\n      pendingActionCount\n      ...ChecklistCard\n    }\n  }\n"];
+export function graphql(source: "\n  query assessmentIndex {\n    assessments {\n      pendingActionCount\n      ...AssessmentCard\n    }\n  }\n"): (typeof documents)["\n  query assessmentIndex {\n    assessments {\n      pendingActionCount\n      ...AssessmentCard\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

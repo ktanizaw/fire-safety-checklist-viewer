@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { graphql, getFragmentData, type FragmentType } from "@/gql";
-import { ChecklistStatus } from "@/gql/graphql";
+import { AssessmentStatus } from "@/gql/graphql";
 import StatusTip from "~/components/atoms/StatusTip.vue";
 import ProgressBar from "@/components/atoms/ProgressBar.vue";
 
-const checklistCardFragment = graphql(`
-  fragment ChecklistCard on Checklist {
+const assessmentCardFragment = graphql(`
+  fragment AssessmentCard on Assessment {
     id
     buildingName
     address
@@ -17,20 +17,23 @@ const checklistCardFragment = graphql(`
 `);
 
 const props = defineProps<{
-  maskedChecklist: FragmentType<typeof checklistCardFragment>;
+  maskedAssessment: FragmentType<typeof assessmentCardFragment>;
 }>();
 
-const checklist = getFragmentData(checklistCardFragment, props.maskedChecklist);
+const assessment = getFragmentData(
+  assessmentCardFragment,
+  props.maskedAssessment
+);
 
-const getStatusColor = (status: ChecklistStatus) => {
+const getStatusColor = (status: AssessmentStatus) => {
   switch (status) {
-    case ChecklistStatus.InProgress:
+    case AssessmentStatus.InProgress:
       return "blue";
-    case ChecklistStatus.Completed:
+    case AssessmentStatus.Completed:
       return "green";
-    case ChecklistStatus.Draft:
+    case AssessmentStatus.Draft:
       return "yellow";
-    case ChecklistStatus.RequiresReview:
+    case AssessmentStatus.RequiresReview:
       return "red";
   }
 };
@@ -38,41 +41,41 @@ const getStatusColor = (status: ChecklistStatus) => {
 
 <template>
   <div
-    class="checklist-card"
-    :class="`checklist-card--${getStatusColor(checklist.status)}`"
+    class="assessment-card"
+    :class="`assessment-card--${getStatusColor(assessment.status)}`"
   >
-    <div class="checklist-card__header">
-      <Icon name="mdi:office-building" class="checklist-card__icon" />
-      <div class="checklist-card__header-left">
-        <p class="checklist-card__title">{{ checklist.buildingName }}</p>
-        <p class="checklist-card__address">{{ checklist.address }}</p>
+    <div class="assessment-card__header">
+      <Icon name="mdi:office-building" class="assessment-card__icon" />
+      <div class="assessment-card__header-left">
+        <p class="assessment-card__title">{{ assessment.buildingName }}</p>
+        <p class="assessment-card__address">{{ assessment.address }}</p>
       </div>
       <StatusTip
-        :color="getStatusColor(checklist.status)"
-        :text="checklist.status"
+        :color="getStatusColor(assessment.status)"
+        :text="assessment.status"
       />
     </div>
-    <ProgressBar :value="checklist.overallCompletionPercentage" />
-    <div class="checklist-card__pending-actions">
-      <Icon name="mdi:alert-outline" class="checklist-card__alert-icon" />
-      <p class="checklist-card__pending-actions-text">
-        {{ checklist.pendingActionCount }} pending actions
+    <ProgressBar :value="assessment.overallCompletionPercentage" />
+    <div class="assessment-card__pending-actions">
+      <Icon name="mdi:alert-outline" class="assessment-card__alert-icon" />
+      <p class="assessment-card__pending-actions-text">
+        {{ assessment.pendingActionCount }} pending actions
       </p>
     </div>
-    <div class="checklist-card__last-updated">
+    <div class="assessment-card__last-updated">
       <Icon
         name="mdi:calendar-blank-outline"
-        class="checklist-card__calendar-icon"
+        class="assessment-card__calendar-icon"
       />
-      <p class="checklist-card__last-updated-text">
-        Last updated {{ new Date(checklist.lastUpdated).toLocaleDateString() }}
+      <p class="assessment-card__last-updated-text">
+        Last updated {{ new Date(assessment.lastUpdated).toLocaleDateString() }}
       </p>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.checklist-card {
+.assessment-card {
   padding: 15px 20px;
   border-radius: 10px;
   display: flex;

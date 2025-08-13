@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ChecklistsModule } from './checklists/checklists.module';
+import { AssessmentsModule } from './assessments/assessments.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
@@ -12,7 +12,7 @@ import { join } from 'path';
       autoSchemaFile: join(process.cwd(), 'schema.graphql'),
       playground: true,
     }),
-    ChecklistsModule,
+    AssessmentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

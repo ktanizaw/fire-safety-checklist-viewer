@@ -7,7 +7,7 @@ import {
   registerEnumType,
 } from '@nestjs/graphql';
 
-export enum ChecklistStatus {
+export enum AssessmentStatus {
   COMPLETED = 'completed',
   IN_PROGRESS = 'in_progress',
   DRAFT = 'draft',
@@ -19,9 +19,9 @@ export enum ActionItemStatus {
   IN_PROGRESS = 'in_progress',
 }
 
-registerEnumType(ChecklistStatus, {
-  name: 'ChecklistStatus',
-  description: 'The status of a checklist',
+registerEnumType(AssessmentStatus, {
+  name: 'AssessmentStatus',
+  description: 'The status of an assessment',
 });
 
 registerEnumType(ActionItemStatus, {
@@ -54,7 +54,7 @@ export class ActionItem {
 }
 
 @ObjectType()
-export class ChecklistItem {
+export class AssessmentItem {
   @Field(() => ID)
   id: string;
 
@@ -81,7 +81,7 @@ export class ChecklistItem {
 }
 
 @ObjectType()
-export class ChecklistSection {
+export class AssessmentSection {
   @Field(() => ID)
   id: string;
 
@@ -97,12 +97,12 @@ export class ChecklistSection {
   @Field(() => Float)
   completionPercentage: number;
 
-  @Field(() => [ChecklistItem])
-  items: ChecklistItem[];
+  @Field(() => [AssessmentItem])
+  items: AssessmentItem[];
 }
 
 @ObjectType()
-export class Checklist {
+export class Assessment {
   @Field(() => ID)
   id: string;
 
@@ -133,8 +133,8 @@ export class Checklist {
   @Field(() => Int)
   maxOccupancy: number;
 
-  @Field(() => ChecklistStatus)
-  status: ChecklistStatus;
+  @Field(() => AssessmentStatus)
+  status: AssessmentStatus;
 
   @Field(() => Float)
   overallCompletionPercentage: number;
@@ -148,6 +148,6 @@ export class Checklist {
   @Field(() => Int, { nullable: true })
   pendingActionCount?: number;
 
-  @Field(() => [ChecklistSection])
-  sections: ChecklistSection[];
+  @Field(() => [AssessmentSection])
+  sections: AssessmentSection[];
 }

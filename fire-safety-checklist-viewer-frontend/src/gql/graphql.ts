@@ -33,8 +33,8 @@ export enum ActionItemStatus {
   Pending = 'PENDING'
 }
 
-export type Checklist = {
-  __typename: 'Checklist';
+export type Assessment = {
+  __typename: 'Assessment';
   address: Scalars['String']['output'];
   assessor?: Maybe<Scalars['String']['output']>;
   buildingName: Scalars['String']['output'];
@@ -48,13 +48,13 @@ export type Checklist = {
   overallCompletionPercentage: Scalars['Float']['output'];
   pendingActionCount?: Maybe<Scalars['Int']['output']>;
   responsiblePerson: Scalars['String']['output'];
-  sections: Array<ChecklistSection>;
-  status: ChecklistStatus;
+  sections: Array<AssessmentSection>;
+  status: AssessmentStatus;
   useOfPremises: Scalars['String']['output'];
 };
 
-export type ChecklistItem = {
-  __typename: 'ChecklistItem';
+export type AssessmentItem = {
+  __typename: 'AssessmentItem';
   actionItem?: Maybe<ActionItem>;
   helpText?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
@@ -65,18 +65,18 @@ export type ChecklistItem = {
   response?: Maybe<Scalars['String']['output']>;
 };
 
-export type ChecklistSection = {
-  __typename: 'ChecklistSection';
+export type AssessmentSection = {
+  __typename: 'AssessmentSection';
   completionPercentage: Scalars['Float']['output'];
   description: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  items: Array<ChecklistItem>;
+  items: Array<AssessmentItem>;
   order: Scalars['Int']['output'];
   title: Scalars['String']['output'];
 };
 
-/** The status of a checklist */
-export enum ChecklistStatus {
+/** The status of an assessment */
+export enum AssessmentStatus {
   Completed = 'COMPLETED',
   Draft = 'DRAFT',
   InProgress = 'IN_PROGRESS',
@@ -85,24 +85,24 @@ export enum ChecklistStatus {
 
 export type Query = {
   __typename: 'Query';
-  checklistById: Checklist;
-  checklists: Array<Checklist>;
+  assessmentById: Assessment;
+  assessments: Array<Assessment>;
 };
 
 
-export type QueryChecklistByIdArgs = {
+export type QueryAssessmentByIdArgs = {
   id: Scalars['String']['input'];
 };
 
-export type ChecklistCardFragment = { __typename: 'Checklist', id: string, buildingName: string, address: string, status: ChecklistStatus, overallCompletionPercentage: number, lastUpdated: string, pendingActionCount?: number | null } & { ' $fragmentName'?: 'ChecklistCardFragment' };
+export type AssessmentCardFragment = { __typename: 'Assessment', id: string, buildingName: string, address: string, status: AssessmentStatus, overallCompletionPercentage: number, lastUpdated: string, pendingActionCount?: number | null } & { ' $fragmentName'?: 'AssessmentCardFragment' };
 
-export type ChecklistIndexQueryVariables = Exact<{ [key: string]: never; }>;
+export type AssessmentIndexQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ChecklistIndexQuery = { __typename: 'Query', checklists: Array<(
-    { __typename: 'Checklist', pendingActionCount?: number | null }
-    & { ' $fragmentRefs'?: { 'ChecklistCardFragment': ChecklistCardFragment } }
+export type AssessmentIndexQuery = { __typename: 'Query', assessments: Array<(
+    { __typename: 'Assessment', pendingActionCount?: number | null }
+    & { ' $fragmentRefs'?: { 'AssessmentCardFragment': AssessmentCardFragment } }
   )> };
 
-export const ChecklistCardFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ChecklistCard"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Checklist"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"buildingName"}},{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"overallCompletionPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"lastUpdated"}},{"kind":"Field","name":{"kind":"Name","value":"pendingActionCount"}}]}}]} as unknown as DocumentNode<ChecklistCardFragment, unknown>;
-export const ChecklistIndexDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"checklistIndex"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"checklists"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"pendingActionCount"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"ChecklistCard"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ChecklistCard"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Checklist"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"buildingName"}},{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"overallCompletionPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"lastUpdated"}},{"kind":"Field","name":{"kind":"Name","value":"pendingActionCount"}}]}}]} as unknown as DocumentNode<ChecklistIndexQuery, ChecklistIndexQueryVariables>;
+export const AssessmentCardFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AssessmentCard"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Assessment"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"buildingName"}},{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"overallCompletionPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"lastUpdated"}},{"kind":"Field","name":{"kind":"Name","value":"pendingActionCount"}}]}}]} as unknown as DocumentNode<AssessmentCardFragment, unknown>;
+export const AssessmentIndexDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"assessmentIndex"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"assessments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"pendingActionCount"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"AssessmentCard"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AssessmentCard"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Assessment"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"buildingName"}},{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"overallCompletionPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"lastUpdated"}},{"kind":"Field","name":{"kind":"Name","value":"pendingActionCount"}}]}}]} as unknown as DocumentNode<AssessmentIndexQuery, AssessmentIndexQueryVariables>;

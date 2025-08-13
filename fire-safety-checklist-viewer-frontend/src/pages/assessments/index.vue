@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { graphql } from "@/gql";
 import { useAsyncData } from "nuxt/app";
-import ChecklistCard from "@/components/compounds/ChecklistCard.vue";
+import AssessmentCard from "@/components/compounds/AssessmentCard.vue";
 
-const checklistIndexDocument = graphql(`
-  query checklistIndex {
-    checklists {
+const assessmentIndexDocument = graphql(`
+  query assessmentIndex {
+    assessments {
       pendingActionCount
-      ...ChecklistCard
+      ...AssessmentCard
     }
   }
 `);
@@ -16,14 +16,16 @@ const {
   $urql: { client },
 } = useNuxtApp();
 
-const { data } = await useAsyncData("checklists", async () => {
+const { data } = await useAsyncData("assessments", async () => {
   const { data: queryData, error } = await client.query(
-    checklistIndexDocument,
+    assessmentIndexDocument,
     {}
   );
 
   if (error || !queryData) {
-    throw new Error(error?.message || "Failed to fetch checklists");
+    throw new Error(
+      error?.message || "Failed to fetch assessmentIndexDocument"
+    );
   }
 
   return queryData;
@@ -42,24 +44,24 @@ const { data } = await useAsyncData("checklists", async () => {
     <div v-if="data" class="page__content">
       <div class="page__content-header">
         <p class="page__showing">
-          Showing {{ data.checklists.length }} of {{ data.checklists.length }}
+          Showing {{ data.assessments.length }} of {{ data.assessments.length }}
           buildings
         </p>
         <span class="page__pending-actions">
           {{
-            data.checklists.reduce(
-              (acc, checklist) => acc + (checklist.pendingActionCount ?? 0),
+            data.assessments.reduce(
+              (acc, assessment) => acc + (assessment.pendingActionCount ?? 0),
               0
             )
           }}
           pending actions
         </span>
       </div>
-      <div class="page__checklists">
-        <ChecklistCard
-          v-for="(checklist, index) in data.checklists"
+      <div class="page__assessments">
+        <assessmentCard
+          v-for="(assessment, index) in data.assessments"
           :key="index"
-          :masked-checklist="checklist"
+          :masked-assessment="assessment"
         />
       </div>
     </div>
@@ -88,7 +90,7 @@ const { data } = await useAsyncData("checklists", async () => {
     color: $color-gray-500;
   }
 
-  &__checklists {
+  &__assessments {
     display: grid;
     grid-template-columns: 1fr;
     gap: 15px;
