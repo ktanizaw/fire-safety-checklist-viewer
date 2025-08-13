@@ -26,17 +26,19 @@ $color-secondary: $color-gray-200;
 $color-accent: #e9ebef; // Light blue-gray
 
 // Status colors (based on dashboard design)
-$color-success: #10b981; // Green for completed status
-$color-success-light: #d1fae5; // Light green background
-$color-warning: #f59e0b; // Yellow/Orange for pending status
-$color-warning-light: #fef3c7; // Light yellow background
-$color-info: #3b82f6; // Blue for in progress status
-$color-info-light: #dbeafe; // Light blue background
-$color-danger: #ef4444; // Red for overdue status
-$color-danger-light: #fee2e2; // Light red background
-
-// Destructive colors
-$color-destructive: #d4183d; // Red
+$color-green: #10b981; // Green for completed status
+$color-green-light: #d1fae5; // Light green background
+$color-green-lighter: #f0fdf4; // Very light green background for cards
+$color-yellow: #f59e0b; // Yellow/Orange for pending status
+$color-yellow-light: #fef3c7; // Light yellow background
+$color-yellow-lighter: #fffbeb; // Very light yellow background for cards
+$color-blue: #3b82f6; // Blue for in progress status
+$color-blue-light: #dbeafe; // Light blue background
+$color-blue-lighter: #eff6ff; // Very light blue background for cards
+$color-red: #ef4444; // Red for overdue status
+$color-red-light: #fee2e2; // Light red background
+$color-red-lighter: #fef2f2; // Very light red background for cards
+$color-red-deep: #d4183d; // Deep red
 
 // Border colors
 $color-border: rgba(0, 0, 0, 0.1);
@@ -66,6 +68,42 @@ $text-lg: 1.125rem;
 $text-md: 1rem;
 $text-sm: 0.875rem;
 $text-xs: 0.75rem;
+$text-xxs: 0.625rem;
 
 // Breakpoints
 $breakpoint-sp: 830px;
+
+@mixin title24px {
+  font-weight: $font-weight-bold;
+  font-size: $text-2xl;
+}
+
+@mixin title20px {
+  font-weight: $font-weight-bold;
+  font-size: $text-xl;
+}
+
+@mixin title18px {
+  font-weight: $font-weight-bold;
+  font-size: $text-lg;
+}
+
+@mixin title16px {
+  font-weight: $font-weight-bold;
+  font-size: $text-md;
+}
+
+@mixin title14px {
+  font-weight: $font-weight-bold;
+  font-size: $text-sm;
+}
+
+@mixin title12px {
+  font-weight: $font-weight-bold;
+  font-size: $text-xs;
+}
+
+@mixin title10px {
+  font-weight: $font-weight-bold;
+  font-size: $text-xxs;
+}
