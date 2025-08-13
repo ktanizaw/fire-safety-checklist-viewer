@@ -9,7 +9,13 @@ type ActionItem {
   timescale: String!
   personResponsible: String!
   priority: String!
-  status: String!
+  status: ActionItemStatus!
+}
+
+"""The status of an action item"""
+enum ActionItemStatus {
+  PENDING
+  IN_PROGRESS
 }
 
 type ChecklistItem {
@@ -43,12 +49,20 @@ type Checklist {
   numberOfFloors: Int!
   construction: String!
   maxOccupancy: Int!
-  status: String!
+  status: ChecklistStatus!
   overallCompletionPercentage: Float!
   lastUpdated: String!
   nextReviewDate: String
   pendingActionCount: Int
   sections: [ChecklistSection!]!
+}
+
+"""The status of a checklist"""
+enum ChecklistStatus {
+  COMPLETED
+  IN_PROGRESS
+  DRAFT
+  REQUIRES_REVIEW
 }
 
 type Query {

@@ -1,4 +1,33 @@
-import { Field, ObjectType, ID, Int, Float } from '@nestjs/graphql';
+import {
+  Field,
+  ObjectType,
+  ID,
+  Int,
+  Float,
+  registerEnumType,
+} from '@nestjs/graphql';
+
+export enum ChecklistStatus {
+  COMPLETED = 'completed',
+  IN_PROGRESS = 'in_progress',
+  DRAFT = 'draft',
+  REQUIRES_REVIEW = 'requires_review',
+}
+
+export enum ActionItemStatus {
+  PENDING = 'pending',
+  IN_PROGRESS = 'in_progress',
+}
+
+registerEnumType(ChecklistStatus, {
+  name: 'ChecklistStatus',
+  description: 'The status of a checklist',
+});
+
+registerEnumType(ActionItemStatus, {
+  name: 'ActionItemStatus',
+  description: 'The status of an action item',
+});
 
 @ObjectType()
 export class ActionItem {
@@ -20,8 +49,8 @@ export class ActionItem {
   @Field()
   priority: string;
 
-  @Field()
-  status: string;
+  @Field(() => ActionItemStatus)
+  status: ActionItemStatus;
 }
 
 @ObjectType()
@@ -104,8 +133,8 @@ export class Checklist {
   @Field(() => Int)
   maxOccupancy: number;
 
-  @Field()
-  status: string;
+  @Field(() => ChecklistStatus)
+  status: ChecklistStatus;
 
   @Field(() => Float)
   overallCompletionPercentage: number;
