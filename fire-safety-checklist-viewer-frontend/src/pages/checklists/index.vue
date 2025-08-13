@@ -28,8 +28,6 @@ const { data } = await useAsyncData("checklists", async () => {
 
   return queryData;
 });
-
-console.log(data.value);
 </script>
 
 <template>
