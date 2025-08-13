@@ -47,6 +47,7 @@ type Checklist {
   overallCompletionPercentage: Float!
   lastUpdated: String!
   nextReviewDate: String
+  pendingActionCount: Int
   sections: [ChecklistSection!]!
 }
 

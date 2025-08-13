@@ -116,6 +116,9 @@ export class Checklist {
   @Field(() => String, { nullable: true })
   nextReviewDate: string | null;
 
+  @Field(() => Int, { nullable: true })
+  pendingActionCount?: number;
+
   @Field(() => [ChecklistSection])
   sections: ChecklistSection[];
 }
