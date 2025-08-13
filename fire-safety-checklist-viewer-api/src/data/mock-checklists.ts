@@ -1,4 +1,4 @@
-import { Checklist } from '@/types/checklist.types';
+import { Checklist } from '../checklists/checklists.entity';
 
 export const mockChecklists: Checklist[] = [
   {

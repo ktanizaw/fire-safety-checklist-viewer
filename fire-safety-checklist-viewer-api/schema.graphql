@@ -1,0 +1,56 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type ActionItem {
+  id: ID!
+  deficiency: String!
+  proposedAction: String!
+  timescale: String!
+  personResponsible: String!
+  priority: String!
+  status: String!
+}
+
+type ChecklistItem {
+  id: ID!
+  question: String!
+  response: String
+  requiresAction: Boolean!
+  lastUpdated: String
+  helpText: String
+  notes: String
+  actionItem: ActionItem
+}
+
+type ChecklistSection {
+  id: ID!
+  title: String!
+  description: String!
+  order: Int!
+  completionPercentage: Float!
+  items: [ChecklistItem!]!
+}
+
+type Checklist {
+  id: ID!
+  buildingName: String!
+  address: String!
+  responsiblePerson: String!
+  assessor: String
+  dateOfAssessment: String
+  useOfPremises: String!
+  numberOfFloors: Int!
+  construction: String!
+  maxOccupancy: Int!
+  status: String!
+  overallCompletionPercentage: Float!
+  lastUpdated: String!
+  nextReviewDate: String
+  sections: [ChecklistSection!]!
+}
+
+type Query {
+  checklists: [Checklist!]!
+  checklistById(id: String!): Checklist!
+}
