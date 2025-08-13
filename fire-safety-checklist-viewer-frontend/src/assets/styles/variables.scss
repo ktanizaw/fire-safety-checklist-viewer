@@ -1,0 +1,71 @@
+// Base colors
+$color-white: #ffffff;
+$color-black: #333;
+
+// Gray colors
+$color-gray-50: oklch(0.985 0 0); // Very light gray
+$color-gray-100: oklch(0.97 0 0); // Light gray
+$color-gray-200: oklch(0.95 0.0058 264.53); // Medium light gray
+$color-gray-300: #ececf0; // Light gray (hex)
+$color-gray-400: #cbced4; // Medium gray
+$color-gray-500: #717182; // Medium dark gray
+$color-gray-600: oklch(0.708 0 0); // Dark gray
+$color-gray-700: oklch(0.269 0 0); // Very dark gray
+$color-gray-800: oklch(0.205 0 0); // Almost black gray
+$color-gray-900: oklch(0.145 0 0); // Near black
+
+// Background colors
+$color-background: $color-white;
+$color-foreground: $color-gray-900;
+
+// Primary colors
+$color-primary: $color-black;
+$color-secondary: $color-gray-200;
+
+// Accent colors
+$color-accent: #e9ebef; // Light blue-gray
+
+// Status colors (based on dashboard design)
+$color-success: #10b981; // Green for completed status
+$color-success-light: #d1fae5; // Light green background
+$color-warning: #f59e0b; // Yellow/Orange for pending status
+$color-warning-light: #fef3c7; // Light yellow background
+$color-info: #3b82f6; // Blue for in progress status
+$color-info-light: #dbeafe; // Light blue background
+$color-danger: #ef4444; // Red for overdue status
+$color-danger-light: #fee2e2; // Light red background
+
+// Destructive colors
+$color-destructive: #d4183d; // Red
+
+// Border colors
+$color-border: rgba(0, 0, 0, 0.1);
+
+// Input colors
+$color-input-background: #f3f3f5; // Light gray background
+
+// Ring colors
+$color-ring: $color-gray-600;
+
+// Chart colors
+$color-chart-orange: oklch(0.646 0.222 41.116); // Orange
+$color-chart-teal: oklch(0.6 0.118 184.704); // Teal
+$color-chart-blue: oklch(0.398 0.07 227.392); // Blue
+$color-chart-yellow: oklch(0.828 0.189 84.429); // Yellow
+$color-chart-red: oklch(0.769 0.188 70.08); // Red
+$color-chart-green: #10b981; // Green
+$color-chart-purple: #8b5cf6; // Purple
+
+// Typography
+$font-weight-bold: 700;
+
+// Text sizes
+$text-2xl: 1.5rem;
+$text-xl: 1.25rem;
+$text-lg: 1.125rem;
+$text-md: 1rem;
+$text-sm: 0.875rem;
+$text-xs: 0.75rem;
+
+// Breakpoints
+$breakpoint-sp: 830px;
