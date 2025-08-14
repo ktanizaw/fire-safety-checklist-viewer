@@ -97,6 +97,9 @@ export class AssessmentSection {
   @Field(() => Float)
   completionPercentage: number;
 
+  @Field(() => Int, { nullable: true })
+  pendingActionCount?: number;
+  
   @Field(() => [AssessmentItem])
   items: AssessmentItem[];
 }

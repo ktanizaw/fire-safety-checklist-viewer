@@ -1,9 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Assessment } from './assessments.entity';
+import { Assessment, AssessmentSection } from './assessments.entity';
 import { mockAssessments } from '@/data/mockData';
 
 @Injectable()
 export class AssessmentsService {
+  private calculateSectionPendingActionCount(
+    section: AssessmentSection,
+  ): number {
+    return section.items.filter(
+      (item) => item.requiresAction && item.actionItem,
+    ).length;
+  }
+
   private calculatePendingActionCount(assessment: Assessment): number {
     return assessment.sections
       .flatMap((section) => section.items)
@@ -11,10 +19,23 @@ export class AssessmentsService {
   }
 
   async getAllAssessments(): Promise<Assessment[]> {
-    return mockAssessments.map((assessment) => ({
-      ...assessment,
-      pendingActionCount: this.calculatePendingActionCount(assessment),
-    }));
+    return mockAssessments.map((assessment) => {
+      const sectionsWithCounts = assessment.sections.map((section) => ({
+        ...section,
+        pendingActionCount: this.calculateSectionPendingActionCount(section),
+      }));
+
+      const enrichedAssessment: Assessment = {
+        ...assessment,
+        sections: sectionsWithCounts,
+      };
+
+      return {
+        ...enrichedAssessment,
+        pendingActionCount:
+          this.calculatePendingActionCount(enrichedAssessment),
+      };
+    });
   }
 
   async getAssessmentById(id: string): Promise<Assessment> {
@@ -24,9 +45,19 @@ export class AssessmentsService {
     if (!assessment) {
       throw new NotFoundException(`Assessment:${id} not found`);
     }
-    return {
+    const sectionsWithCounts = assessment.sections.map((section) => ({
+      ...section,
+      pendingActionCount: this.calculateSectionPendingActionCount(section),
+    }));
+
+    const enrichedAssessment: Assessment = {
       ...assessment,
-      pendingActionCount: this.calculatePendingActionCount(assessment),
+      sections: sectionsWithCounts,
+    };
+
+    return {
+      ...enrichedAssessment,
+      pendingActionCount: this.calculatePendingActionCount(enrichedAssessment),
     };
   }
 }

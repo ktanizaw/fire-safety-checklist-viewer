@@ -35,6 +35,7 @@ type AssessmentSection {
   description: String!
   order: Int!
   completionPercentage: Float!
+  pendingActionCount: Int
   items: [AssessmentItem!]!
 }
 
@@ -67,5 +68,5 @@ enum AssessmentStatus {
 
 type Query {
   assessments: [Assessment!]!
-  assessmentById(id: String!): Assessment!
+  assessmentById(id: ID!): Assessment!
 }

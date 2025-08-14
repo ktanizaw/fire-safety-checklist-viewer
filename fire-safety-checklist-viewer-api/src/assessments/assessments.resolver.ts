@@ -1,4 +1,4 @@
-import { Resolver, Query, Args } from '@nestjs/graphql';
+import { Resolver, Query, Args, ID } from '@nestjs/graphql';
 import { AssessmentsService } from './assessments.service';
 import { Assessment } from './assessments.entity';
 
@@ -12,7 +12,9 @@ export class AssessmentsResolver {
   }
 
   @Query(() => Assessment)
-  async assessmentById(@Args('id') id: string): Promise<Assessment> {
+  async assessmentById(
+    @Args('id', { type: () => ID }) id: string,
+  ): Promise<Assessment> {
     return this.assessmentsService.getAssessmentById(id);
   }
 }
