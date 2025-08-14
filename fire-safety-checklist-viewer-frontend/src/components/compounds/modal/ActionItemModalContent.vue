@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import StatusTip from "@/components/atoms/StatusTip.vue";
-import { ActionItemStatus } from "@/gql/graphql";
 import type { ActionItem } from "@/gql/graphql";
 
 defineProps<{
@@ -9,14 +8,14 @@ defineProps<{
 
 defineEmits(["close"]);
 
-const getActionItemStatusColor = (
-  status: ActionItemStatus
-): "yellow" | "blue" => {
+const getActionItemStatusColor = (status: string): "yellow" | "blue" => {
   switch (status) {
-    case ActionItemStatus.Pending:
+    case "pending":
       return "yellow";
-    case ActionItemStatus.InProgress:
+    case "in_progress":
       return "blue";
+    default:
+      return "yellow";
   }
 };
 </script>
