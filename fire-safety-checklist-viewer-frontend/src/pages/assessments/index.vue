@@ -1,11 +1,15 @@
 <script lang="ts" setup>
 import { graphql } from "@/gql";
 import AssessmentCard from "@/components/compounds/AssessmentCard.vue";
+import SelectBox from "@/components/atoms/SelectBox.vue";
+import { STATUS_OPTIONS } from "@/libs/assessment/status";
+// import sortBy from "just-sort-by";
 
 const assessmentIndexDocument = graphql(`
-  query assessmentIndex {
-    assessments {
+  query assessmentIndex($filter: AssessmentFilter) {
+    assessments(filter: $filter) {
       pendingActionCount
+      id
       ...AssessmentCard
     }
   }
@@ -15,10 +19,16 @@ const {
   $urql: { client },
 } = useNuxtApp();
 
-const { data } = await useAsyncData("assessmentIndex", async () => {
+const statusValue = ref<string>("");
+
+const { data, refresh } = await useAsyncData(async () => {
   const { data: queryData, error } = await client.query(
     assessmentIndexDocument,
-    {}
+    {
+      filter: {
+        status: statusValue.value,
+      },
+    }
   );
 
   if (error || !queryData) {
@@ -45,6 +55,28 @@ const pendingActionCount = computed(() => {
     0
   );
 });
+
+// const percentageValue = ref<string>("desc");
+
+// const percentageOptions = [
+//   { label: "descending", value: "desc" },
+//   { label: "ascending", value: "asc" },
+// ];
+
+// const sortedAssessments = computed(() => {
+//   if (!data.value) {
+//     return;
+//   }
+
+//   return sortBy(data.value?.assessments, (assessment) => {
+//     const item = getFragmentData(AssessmentCardFragmentDoc, assessment);
+//     return item.overallCompletionPercentage;
+//   });
+// });
+
+const handleStatusChange = () => {
+  refresh();
+};
 </script>
 
 <template>
@@ -57,6 +89,21 @@ const pendingActionCount = computed(() => {
       </p>
     </div>
     <div v-if="data" class="page__content">
+      <div class="page__filter">
+        <SelectBox
+          v-model:value="statusValue"
+          :options="STATUS_OPTIONS"
+          placeholder="All Statuses"
+          class="page__select-box"
+          @update:value="handleStatusChange"
+        />
+        <!-- <SelectBox
+          v-model:value="percentageValue"
+          :options="percentageOptions"
+          placeholder="All Percentages"
+          class="page__select-box"
+        /> -->
+      </div>
       <div class="page__content-header">
         <p class="page__showing">
           Showing {{ data.assessments.length }} of {{ data.assessments.length }}
@@ -69,8 +116,8 @@ const pendingActionCount = computed(() => {
       </div>
       <div class="page__assessments">
         <AssessmentCard
-          v-for="(assessment, index) in data.assessments"
-          :key="index"
+          v-for="assessment in data.assessments"
+          :key="assessment.id"
           :masked-assessment="assessment"
         />
       </div>
@@ -137,6 +184,10 @@ const pendingActionCount = computed(() => {
     color: $color-white;
     padding: 2px 4px;
     font-size: $text-xs;
+  }
+
+  &__select-box {
+    width: 150px;
   }
 }
 </style>

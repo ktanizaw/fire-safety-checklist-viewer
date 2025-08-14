@@ -5,6 +5,7 @@ import {
   Int,
   Float,
   registerEnumType,
+  InputType,
 } from '@nestjs/graphql';
 
 export enum AssessmentStatus {
@@ -29,6 +30,12 @@ registerEnumType(ActionItemStatus, {
   description: 'The status of an action item',
 });
 
+@InputType()
+export class AssessmentFilter {
+  @Field(() => String, { nullable: true })
+  status?: string;
+}
+
 @ObjectType()
 export class ActionItem {
   @Field(() => ID)
@@ -49,8 +56,8 @@ export class ActionItem {
   @Field()
   priority: string;
 
-  @Field(() => ActionItemStatus)
-  status: ActionItemStatus;
+  @Field()
+  status: string;
 }
 
 @ObjectType()
@@ -99,7 +106,7 @@ export class AssessmentSection {
 
   @Field(() => Int, { nullable: true })
   pendingActionCount?: number;
-  
+
   @Field(() => [AssessmentItem])
   items: AssessmentItem[];
 }
@@ -136,8 +143,8 @@ export class Assessment {
   @Field(() => Int)
   maxOccupancy: number;
 
-  @Field(() => AssessmentStatus)
-  status: AssessmentStatus;
+  @Field()
+  status: string;
 
   @Field(() => Float)
   overallCompletionPercentage: number;

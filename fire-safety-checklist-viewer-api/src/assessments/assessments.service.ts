@@ -1,5 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Assessment, AssessmentSection } from './assessments.entity';
+import {
+  Assessment,
+  AssessmentSection,
+  AssessmentFilter,
+} from './assessments.entity';
 import { mockAssessments } from '@/data/mockData';
 
 @Injectable()
@@ -18,8 +22,12 @@ export class AssessmentsService {
       .filter((item) => item.requiresAction && item.actionItem).length;
   }
 
-  async getAllAssessments(): Promise<Assessment[]> {
-    return mockAssessments.map((assessment) => {
+  async getAllAssessments(filter?: AssessmentFilter): Promise<Assessment[]> {
+    const filteredAssessments = filter?.status
+      ? mockAssessments.filter((a) => a.status === filter.status)
+      : mockAssessments;
+
+    return filteredAssessments.map((assessment) => {
       const sectionsWithCounts = assessment.sections.map((section) => ({
         ...section,
         pendingActionCount: this.calculateSectionPendingActionCount(section),

@@ -26,16 +26,17 @@ const assessment = getFragmentData(
   props.maskedAssessment
 );
 
-const toAssesssmentDetail = () => {
+const toAssessmentDetail = () => {
   navigateTo(`/assessments/${assessment.id}`);
 };
 </script>
 
 <template>
+  
   <div
     class="assessment-card"
     :class="`assessment-card--${getStatusColor(assessment.status)}`"
-    @click="toAssesssmentDetail"
+    @click="toAssessmentDetail"
   >
     <div class="assessment-card__header">
       <Icon name="mdi:office-building" class="assessment-card__icon" />

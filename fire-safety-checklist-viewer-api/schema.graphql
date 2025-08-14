@@ -9,13 +9,7 @@ type ActionItem {
   timescale: String!
   personResponsible: String!
   priority: String!
-  status: ActionItemStatus!
-}
-
-"""The status of an action item"""
-enum ActionItemStatus {
-  PENDING
-  IN_PROGRESS
+  status: String!
 }
 
 type AssessmentItem {
@@ -50,7 +44,7 @@ type Assessment {
   numberOfFloors: Int!
   construction: String!
   maxOccupancy: Int!
-  status: AssessmentStatus!
+  status: String!
   overallCompletionPercentage: Float!
   lastUpdated: String!
   nextReviewDate: String
@@ -58,15 +52,11 @@ type Assessment {
   sections: [AssessmentSection!]!
 }
 
-"""The status of an assessment"""
-enum AssessmentStatus {
-  COMPLETED
-  IN_PROGRESS
-  DRAFT
-  REQUIRES_REVIEW
+type Query {
+  assessments(filter: AssessmentFilter): [Assessment!]!
+  assessmentById(id: ID!): Assessment!
 }
 
-type Query {
-  assessments: [Assessment!]!
-  assessmentById(id: ID!): Assessment!
+input AssessmentFilter {
+  status: String
 }
