@@ -4,8 +4,8 @@ import ProgressBar from "@/components/atoms/ProgressBar.vue";
 import { graphql, getFragmentData, type FragmentType } from "@/gql";
 import StatusTip from "@/components/atoms/StatusTip.vue";
 
-const assessmentSectionFragment = graphql(`
-  fragment AssessmentSection on AssessmentSection {
+const assessmentSectionAccordionFragment = graphql(`
+  fragment AssessmentSectionAccordion on AssessmentSection {
     id
     title
     description
@@ -16,12 +16,14 @@ const assessmentSectionFragment = graphql(`
 `);
 
 const props = defineProps<{
-  maskedAssessmentSection: FragmentType<typeof assessmentSectionFragment>;
+  maskedAssessmentSectionAccordion: FragmentType<
+    typeof assessmentSectionAccordionFragment
+  >;
 }>();
 
 const sectionData = getFragmentData(
-  assessmentSectionFragment,
-  props.maskedAssessmentSection
+  assessmentSectionAccordionFragment,
+  props.maskedAssessmentSectionAccordion
 );
 
 const isOpen = ref(false);
@@ -61,6 +63,14 @@ const isOpen = ref(false);
           text="Completed"
         />
         <StatusTip v-else color="blue" text="In Progress" />
+
+        <span
+          v-if="sectionData.pendingActionCount"
+          class="assessment-section__pending-action-count"
+        >
+          <Icon name="mdi:alert-outline" />
+          {{ sectionData.pendingActionCount }}
+        </span>
         <Icon
           :name="isOpen ? 'mdi:chevron-up' : 'mdi:chevron-down'"
           class="assessment-section__chevron-icon"
@@ -113,6 +123,17 @@ const isOpen = ref(false);
 
   &__progress-bar {
     width: 100px;
+  }
+
+  &__pending-action-count {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-size: $text-xxs;
+    color: $color-white;
+    background-color: $color-red-deep;
   }
 
   &__help-icon {

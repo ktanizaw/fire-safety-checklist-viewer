@@ -15,7 +15,7 @@ const assessmentDetailDocument = graphql(`
       ...AssessmentInfo
       sections {
         id
-        ...AssessmentSection
+        ...AssessmentSectionAccordion
         items {
           id
           ...AssessmentQuestion
@@ -84,7 +84,7 @@ const closeActionItemModal = () => {
         <AssessmentSectionAccordion
           v-for="section in data.assessmentById.sections"
           :key="section.id"
-          :maskedAssessmentSection="section"
+          :maskedAssessmentSectionAccordion="section"
         >
           <div class="page__questions">
             <AssessmentQuestion
