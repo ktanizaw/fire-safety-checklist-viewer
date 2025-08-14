@@ -1,9 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import {
   Assessment,
   AssessmentSection,
   AssessmentFilter,
   AssessmentSort,
+  AssessmentStatus,
 } from './assessments.entity';
 import { SortOrder } from '@/enums/sort.enum';
 import { mockAssessments } from '@/data/mockData';
@@ -52,13 +58,59 @@ export class AssessmentsService {
     filter?: AssessmentFilter,
     sort?: AssessmentSort,
   ): Promise<Assessment[]> {
-    const filteredAssessments = filter?.status
-      ? mockAssessments.filter((a) => a.status === filter.status)
-      : mockAssessments;
+    try {
+      if (
+        filter?.status &&
+        !Object.values(AssessmentStatus).includes(
+          filter.status as AssessmentStatus,
+        )
+      ) {
+        throw new BadRequestException(`Invalid status: ${filter.status}`);
+      }
 
-    const sortedAssessments = this.sortAssessments(filteredAssessments, sort);
+      const filteredAssessments = filter?.status
+        ? mockAssessments.filter((a) => a.status === filter.status)
+        : mockAssessments;
 
-    return sortedAssessments.map((assessment) => {
+      const sortedAssessments = this.sortAssessments(filteredAssessments, sort);
+
+      const enrichedAssessments = sortedAssessments.map((assessment) => {
+        const sectionsWithCounts = assessment.sections.map((section) => ({
+          ...section,
+          pendingActionCount: this.calculateSectionPendingActionCount(section),
+        }));
+
+        const enrichedAssessment: Assessment = {
+          ...assessment,
+          sections: sectionsWithCounts,
+        };
+
+        return {
+          ...enrichedAssessment,
+          pendingActionCount:
+            this.calculatePendingActionCount(enrichedAssessment),
+        };
+      });
+
+      return enrichedAssessments;
+    } catch (error) {
+      if (!(error instanceof BadRequestException)) {
+        throw new InternalServerErrorException('Failed to fetch assessments');
+      }
+      throw error;
+    }
+  }
+
+  async getAssessmentById(id: string): Promise<Assessment> {
+    try {
+      const assessment = mockAssessments.find(
+        (assessment) => assessment.id === id,
+      );
+
+      if (!assessment) {
+        throw new NotFoundException(`Assessment:${id} not found`);
+      }
+
       const sectionsWithCounts = assessment.sections.map((section) => ({
         ...section,
         pendingActionCount: this.calculateSectionPendingActionCount(section),
@@ -69,34 +121,23 @@ export class AssessmentsService {
         sections: sectionsWithCounts,
       };
 
-      return {
+      const result = {
         ...enrichedAssessment,
         pendingActionCount:
           this.calculatePendingActionCount(enrichedAssessment),
       };
-    });
-  }
 
-  async getAssessmentById(id: string): Promise<Assessment> {
-    const assessment = mockAssessments.find(
-      (assessment) => assessment.id === id,
-    );
-    if (!assessment) {
-      throw new NotFoundException(`Assessment:${id} not found`);
+      return result;
+    } catch (error) {
+      if (
+        !(
+          error instanceof NotFoundException ||
+          error instanceof BadRequestException
+        )
+      ) {
+        throw new InternalServerErrorException('Failed to fetch assessment');
+      }
+      throw error;
     }
-    const sectionsWithCounts = assessment.sections.map((section) => ({
-      ...section,
-      pendingActionCount: this.calculateSectionPendingActionCount(section),
-    }));
-
-    const enrichedAssessment: Assessment = {
-      ...assessment,
-      sections: sectionsWithCounts,
-    };
-
-    return {
-      ...enrichedAssessment,
-      pendingActionCount: this.calculatePendingActionCount(enrichedAssessment),
-    };
   }
 }

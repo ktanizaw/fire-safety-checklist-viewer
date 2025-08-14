@@ -17,13 +17,26 @@ export class AssessmentsResolver {
     @Args('sort', { type: () => AssessmentSort, nullable: true })
     sort?: AssessmentSort,
   ): Promise<Assessment[]> {
-    return this.assessmentsService.getAllAssessments(filter, sort);
+    try {
+      const result = await this.assessmentsService.getAllAssessments(
+        filter,
+        sort,
+      );
+      return result;
+    } catch (error) {
+      throw error;
+    }
   }
 
   @Query(() => Assessment)
   async assessmentById(
     @Args('id', { type: () => ID }) id: string,
   ): Promise<Assessment> {
-    return this.assessmentsService.getAssessmentById(id);
+    try {
+      const result = await this.assessmentsService.getAssessmentById(id);
+      return result;
+    } catch (error) {
+      throw error;
+    }
   }
 }
