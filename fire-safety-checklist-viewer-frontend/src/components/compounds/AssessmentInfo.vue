@@ -4,7 +4,7 @@ import StatusTip from "~/components/atoms/StatusTip.vue";
 import { graphql, getFragmentData, type FragmentType } from "@/gql";
 import { getStatusColor } from "@/libs/assessment/status";
 import ProgressBar from "@/components/atoms/ProgressBar.vue";
-import IconLabel from "~/components/molecules/IconLabel.vue";
+import IconLabel from "@/components/atoms/IconLabel.vue";
 
 const assessmentInfoFragment = graphql(`
   fragment AssessmentInfo on Assessment {

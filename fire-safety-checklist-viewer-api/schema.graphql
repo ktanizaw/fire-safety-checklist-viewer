@@ -53,10 +53,20 @@ type Assessment {
 }
 
 type Query {
-  assessments(filter: AssessmentFilter): [Assessment!]!
+  assessments(filter: AssessmentFilter, sort: AssessmentSort): [Assessment!]!
   assessmentById(id: ID!): Assessment!
 }
 
 input AssessmentFilter {
   status: String
+}
+
+input AssessmentSort {
+  overallCompletionPercentage: SortOrder
+}
+
+"""The sort order for sorting operations"""
+enum SortOrder {
+  ASC
+  DESC
 }

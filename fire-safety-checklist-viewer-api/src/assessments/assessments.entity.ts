@@ -7,6 +7,7 @@ import {
   registerEnumType,
   InputType,
 } from '@nestjs/graphql';
+import { SortOrder } from '@/enums/sort.enum';
 
 export enum AssessmentStatus {
   COMPLETED = 'completed',
@@ -34,6 +35,12 @@ registerEnumType(ActionItemStatus, {
 export class AssessmentFilter {
   @Field(() => String, { nullable: true })
   status?: string;
+}
+
+@InputType()
+export class AssessmentSort {
+  @Field(() => SortOrder, { nullable: true })
+  overallCompletionPercentage?: SortOrder;
 }
 
 @ObjectType()

@@ -3,7 +3,9 @@ import {
   Assessment,
   AssessmentSection,
   AssessmentFilter,
+  AssessmentSort,
 } from './assessments.entity';
+import { SortOrder } from '@/enums/sort.enum';
 import { mockAssessments } from '@/data/mockData';
 
 @Injectable()
@@ -22,12 +24,41 @@ export class AssessmentsService {
       .filter((item) => item.requiresAction && item.actionItem).length;
   }
 
-  async getAllAssessments(filter?: AssessmentFilter): Promise<Assessment[]> {
+  private sortAssessments(
+    assessments: Assessment[],
+    sort?: AssessmentSort,
+  ): Assessment[] {
+    if (!sort) {
+      return assessments;
+    }
+
+    return [...assessments].sort((a, b) => {
+      if (sort.overallCompletionPercentage) {
+        const aValue = a.overallCompletionPercentage;
+        const bValue = b.overallCompletionPercentage;
+
+        if (sort.overallCompletionPercentage === SortOrder.ASC) {
+          return aValue - bValue;
+        } else if (sort.overallCompletionPercentage === SortOrder.DESC) {
+          return bValue - aValue;
+        }
+      }
+
+      return 0;
+    });
+  }
+
+  async getAllAssessments(
+    filter?: AssessmentFilter,
+    sort?: AssessmentSort,
+  ): Promise<Assessment[]> {
     const filteredAssessments = filter?.status
       ? mockAssessments.filter((a) => a.status === filter.status)
       : mockAssessments;
 
-    return filteredAssessments.map((assessment) => {
+    const sortedAssessments = this.sortAssessments(filteredAssessments, sort);
+
+    return sortedAssessments.map((assessment) => {
       const sectionsWithCounts = assessment.sections.map((section) => ({
         ...section,
         pendingActionCount: this.calculateSectionPendingActionCount(section),

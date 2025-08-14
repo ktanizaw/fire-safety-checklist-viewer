@@ -1,6 +1,10 @@
 import { Resolver, Query, Args, ID } from '@nestjs/graphql';
 import { AssessmentsService } from './assessments.service';
-import { Assessment, AssessmentFilter } from './assessments.entity';
+import {
+  Assessment,
+  AssessmentFilter,
+  AssessmentSort,
+} from './assessments.entity';
 
 @Resolver()
 export class AssessmentsResolver {
@@ -10,8 +14,10 @@ export class AssessmentsResolver {
   async assessments(
     @Args('filter', { type: () => AssessmentFilter, nullable: true })
     filter?: AssessmentFilter,
+    @Args('sort', { type: () => AssessmentSort, nullable: true })
+    sort?: AssessmentSort,
   ): Promise<Assessment[]> {
-    return this.assessmentsService.getAllAssessments(filter);
+    return this.assessmentsService.getAllAssessments(filter, sort);
   }
 
   @Query(() => Assessment)

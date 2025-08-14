@@ -3,11 +3,11 @@ import { graphql } from "@/gql";
 import AssessmentCard from "@/components/compounds/AssessmentCard.vue";
 import SelectBox from "@/components/atoms/SelectBox.vue";
 import { STATUS_OPTIONS } from "@/libs/assessment/status";
-// import sortBy from "just-sort-by";
+import { SortOrder } from "@/gql/graphql";
 
 const assessmentIndexDocument = graphql(`
-  query assessmentIndex($filter: AssessmentFilter) {
-    assessments(filter: $filter) {
+  query assessmentIndex($filter: AssessmentFilter, $sort: AssessmentSort) {
+    assessments(filter: $filter, sort: $sort) {
       pendingActionCount
       id
       ...AssessmentCard
@@ -20,6 +20,7 @@ const {
 } = useNuxtApp();
 
 const statusValue = ref<string>("");
+const percentageValue = ref<Maybe<SortOrder>>(null);
 
 const { data, refresh } = await useAsyncData(async () => {
   const { data: queryData, error } = await client.query(
@@ -27,6 +28,9 @@ const { data, refresh } = await useAsyncData(async () => {
     {
       filter: {
         status: statusValue.value,
+      },
+      sort: {
+        overallCompletionPercentage: percentageValue.value,
       },
     }
   );
@@ -56,25 +60,13 @@ const pendingActionCount = computed(() => {
   );
 });
 
-// const percentageValue = ref<string>("desc");
+const percentageOptions = [
+  { label: "Default", value: null },
+  { label: "Descending", value: SortOrder.Desc },
+  { label: "Ascending", value: SortOrder.Asc },
+];
 
-// const percentageOptions = [
-//   { label: "descending", value: "desc" },
-//   { label: "ascending", value: "asc" },
-// ];
-
-// const sortedAssessments = computed(() => {
-//   if (!data.value) {
-//     return;
-//   }
-
-//   return sortBy(data.value?.assessments, (assessment) => {
-//     const item = getFragmentData(AssessmentCardFragmentDoc, assessment);
-//     return item.overallCompletionPercentage;
-//   });
-// });
-
-const handleStatusChange = () => {
+const refetchData = () => {
   refresh();
 };
 </script>
@@ -95,14 +87,15 @@ const handleStatusChange = () => {
           :options="STATUS_OPTIONS"
           placeholder="All Statuses"
           class="page__select-box"
-          @update:value="handleStatusChange"
+          @update:value="refetchData"
         />
-        <!-- <SelectBox
+        <SelectBox
           v-model:value="percentageValue"
           :options="percentageOptions"
           placeholder="All Percentages"
           class="page__select-box"
-        /> -->
+          @update:value="refetchData"
+        />
       </div>
       <div class="page__content-header">
         <p class="page__showing">
@@ -184,6 +177,11 @@ const handleStatusChange = () => {
     color: $color-white;
     padding: 2px 4px;
     font-size: $text-xs;
+  }
+
+  &__filter {
+    display: flex;
+    gap: 10px;
   }
 
   &__select-box {
