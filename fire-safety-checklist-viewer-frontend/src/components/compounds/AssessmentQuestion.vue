@@ -55,11 +55,7 @@ defineEmits(["openActionItemModal"]);
           :color="sectionItem.response === 'yes' ? 'green' : 'red'"
           :text="sectionItem.response === 'yes' ? 'Yes' : 'No'"
         />
-        <StatusTip
-          v-else
-          color="yellow"
-          text="Not Answered"
-        />
+        <StatusTip v-else color="yellow" text="Not Answered" />
       </div>
       <p
         v-if="sectionItem.lastUpdated"
@@ -103,6 +99,10 @@ defineEmits(["openActionItemModal"]);
     align-items: center;
     gap: 4px;
     @include title16px;
+
+    @media (min-width: $breakpoint-sp) {
+      @include title14px;
+    }
   }
 
   &__order {
@@ -115,6 +115,7 @@ defineEmits(["openActionItemModal"]);
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
   }
 
   &__help {

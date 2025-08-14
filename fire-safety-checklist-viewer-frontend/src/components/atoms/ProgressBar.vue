@@ -28,7 +28,7 @@ defineProps<{
     justify-content: space-between;
     align-items: center;
     font-weight: 500;
-    color: #333;
+    color: $color-black;
   }
 
   &__label {
@@ -42,14 +42,14 @@ defineProps<{
   &__container {
     width: 100%;
     height: 8px;
-    background-color: #e5e5e5;
+    background-color: $color-gray-300;
     border-radius: 4px;
     overflow: hidden;
   }
 
   &__fill {
     height: 100%;
-    background-color: #1a1a1a;
+    background-color: $color-gray-700;
     border-radius: 4px;
     transition: width 0.3s ease;
   }

@@ -14,17 +14,6 @@ $color-gray-700: oklch(0.269 0 0); // Very dark gray
 $color-gray-800: oklch(0.205 0 0); // Almost black gray
 $color-gray-900: oklch(0.145 0 0); // Near black
 
-// Background colors
-$color-background: $color-white;
-$color-foreground: $color-gray-900;
-
-// Primary colors
-$color-primary: $color-black;
-$color-secondary: $color-gray-200;
-
-// Accent colors
-$color-accent: #e9ebef; // Light blue-gray
-
 // Status colors (based on dashboard design)
 $color-green: #10b981; // Green for completed status
 $color-green-light: #d1fae5; // Light green background
@@ -45,9 +34,6 @@ $color-border: rgba(0, 0, 0, 0.1);
 
 // Input colors
 $color-input-background: #f3f3f5; // Light gray background
-
-// Ring colors
-$color-ring: $color-gray-600;
 
 // Chart colors
 $color-chart-orange: oklch(0.646 0.222 41.116); // Orange

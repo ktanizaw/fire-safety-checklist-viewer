@@ -119,10 +119,14 @@ const isOpen = ref(false);
     align-items: center;
     gap: 4px;
     @include title18px;
+
+    @media (min-width: $breakpoint-sp) {
+      @include title16px;
+    }
   }
 
   &__progress-bar {
-    width: 100px;
+    width: 150px;
   }
 
   &__pending-action-count {
