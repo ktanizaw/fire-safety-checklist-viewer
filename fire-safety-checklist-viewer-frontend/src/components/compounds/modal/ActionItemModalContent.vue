@@ -1,21 +1,21 @@
 <script lang="ts" setup>
-import StatusTip from "@/components/atoms/StatusTip.vue";
-import type { ActionItem } from "@/gql/graphql";
+import StatusTip from '@/components/atoms/StatusTip.vue';
+import type { ActionItem } from '@/gql/graphql';
 
 defineProps<{
   actionItem: ActionItem;
 }>();
 
-defineEmits(["close"]);
+defineEmits(['close']);
 
-const getActionItemStatusColor = (status: string): "yellow" | "blue" => {
+const getActionItemStatusColor = (status: string): 'yellow' | 'blue' => {
   switch (status) {
-    case "pending":
-      return "yellow";
-    case "in_progress":
-      return "blue";
+    case 'pending':
+      return 'yellow';
+    case 'in_progress':
+      return 'blue';
     default:
-      return "yellow";
+      return 'yellow';
   }
 };
 </script>
@@ -75,16 +75,16 @@ const getActionItemStatusColor = (status: string): "yellow" | "blue" => {
 
 <style lang="scss" scoped>
 .action-item-modal {
-  width: 600px;
-  max-width: calc(100% - 40px);
-  background-color: $color-white;
-  border-radius: 12px;
-  border: 1px solid $color-gray-200;
-  box-shadow: 0 10px 30px rgba($color-black, 0.2);
-  padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  width: 600px;
+  max-width: calc(100% - 40px);
+  padding: 16px;
+  background-color: $color-white;
+  border: 1px solid $color-gray-200;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba($color-black, 0.2);
 
   @media (max-width: $breakpoint-sp) {
     width: calc(100% - 20px);
@@ -100,8 +100,8 @@ const getActionItemStatusColor = (status: string): "yellow" | "blue" => {
 
   &__title-wrapper {
     display: flex;
-    align-items: center;
     gap: 6px;
+    align-items: center;
   }
 
   &__title-icon {
@@ -113,16 +113,17 @@ const getActionItemStatusColor = (status: string): "yellow" | "blue" => {
   }
 
   &__close {
-    width: 32px;
-    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 32px;
+    height: 32px;
+    background-color: $color-white;
     border: 1px solid $color-gray-200;
     border-radius: 6px;
-    background-color: $color-white;
     cursor: pointer;
     transition: background-color 0.2s ease;
+
     &:hover {
       background-color: $color-gray-100;
     }

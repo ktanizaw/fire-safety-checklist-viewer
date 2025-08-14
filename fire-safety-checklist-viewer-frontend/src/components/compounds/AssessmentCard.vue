@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { format } from "date-fns";
-import { graphql, getFragmentData, type FragmentType } from "@/gql";
-import StatusTip from "~/components/atoms/StatusTip.vue";
-import ProgressBar from "@/components/atoms/ProgressBar.vue";
-import { getStatusColor } from "@/libs/assessment/status";
+import { format } from 'date-fns';
+import { graphql, getFragmentData, type FragmentType } from '@/gql';
+import StatusTip from '~/components/atoms/StatusTip.vue';
+import ProgressBar from '@/components/atoms/ProgressBar.vue';
+import { getStatusColor } from '@/libs/assessment/status';
 
 const assessmentCardFragment = graphql(`
   fragment AssessmentCard on Assessment {
@@ -23,7 +23,7 @@ const props = defineProps<{
 
 const assessment = getFragmentData(
   assessmentCardFragment,
-  props.maskedAssessment
+  props.maskedAssessment,
 );
 
 const toAssessmentDetail = () => {
@@ -32,7 +32,6 @@ const toAssessmentDetail = () => {
 </script>
 
 <template>
-  
   <div
     class="assessment-card"
     :class="`assessment-card--${getStatusColor(assessment.status)}`"
@@ -69,7 +68,7 @@ const toAssessmentDetail = () => {
         />
         <p class="assessment-card__last-updated-text">
           Last updated
-          {{ format(new Date(assessment.lastUpdated), "MMM d,yyyy") }}
+          {{ format(new Date(assessment.lastUpdated), 'MMM d,yyyy') }}
         </p>
       </div>
     </div>
@@ -78,14 +77,14 @@ const toAssessmentDetail = () => {
 
 <style lang="scss" scoped>
 .assessment-card {
-  padding: 15px 20px;
-  border-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  height: 200px;
+  padding: 15px 20px;
+  border-radius: 10px;
   cursor: pointer;
   transition: box-shadow 0.3s ease;
-  height: 200px;
 
   &:hover {
     box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
@@ -113,15 +112,15 @@ const toAssessmentDetail = () => {
 
   &__header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
     gap: 15px;
+    align-items: center;
+    justify-content: space-between;
   }
 
   &__icon {
-    font-size: 24px;
-    color: $color-gray-600;
     flex-shrink: 0;
+    color: $color-gray-600;
+    font-size: 24px;
   }
 
   &__header-left {
@@ -135,14 +134,14 @@ const toAssessmentDetail = () => {
   }
 
   &__address {
-    font-size: $text-sm;
     color: $color-gray-500;
+    font-size: $text-sm;
   }
 
   &__pending-actions {
     display: flex;
-    align-items: center;
     gap: 5px;
+    align-items: center;
   }
 
   &__alert-icon {
@@ -161,8 +160,8 @@ const toAssessmentDetail = () => {
 
   &__last-updated {
     display: flex;
-    align-items: center;
     gap: 5px;
+    align-items: center;
   }
 
   &__calendar-icon {
@@ -170,8 +169,8 @@ const toAssessmentDetail = () => {
   }
 
   &__last-updated-text {
-    font-size: $text-sm;
     color: $color-gray-500;
+    font-size: $text-sm;
   }
 }
 </style>

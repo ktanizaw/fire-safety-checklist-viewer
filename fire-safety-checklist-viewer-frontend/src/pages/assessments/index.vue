@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { graphql } from "@/gql";
-import AssessmentCard from "@/components/compounds/AssessmentCard.vue";
-import SelectBox from "@/components/atoms/SelectBox.vue";
-import { STATUS_OPTIONS } from "@/libs/assessment/status";
-import { SortOrder } from "@/gql/graphql";
-import LoadingSpinner from "@/components/atoms/LoadingSpinner.vue";
+import { graphql } from '@/gql';
+import AssessmentCard from '@/components/compounds/AssessmentCard.vue';
+import SelectBox from '@/components/atoms/SelectBox.vue';
+import { STATUS_OPTIONS } from '@/libs/assessment/status';
+import { SortOrder } from '@/gql/graphql';
+import LoadingSpinner from '@/components/atoms/LoadingSpinner.vue';
 
 const assessmentIndexDocument = graphql(`
   query assessmentIndex($filter: AssessmentFilter, $sort: AssessmentSort) {
@@ -20,7 +20,7 @@ const {
   $urql: { client },
 } = useNuxtApp();
 
-const statusValue = ref<string>("");
+const statusValue = ref<string>('');
 const percentageValue = ref<Maybe<SortOrder>>(null);
 
 const { data, refresh, pending } = await useRequiredAsyncData(async () => {
@@ -33,10 +33,10 @@ const { data, refresh, pending } = await useRequiredAsyncData(async () => {
       sort: {
         overallCompletionPercentage: percentageValue.value,
       },
-    }
+    },
   );
   if (error || !queryData) {
-    throw new Error(error?.message || "Failed to fetch assessmentIndex");
+    throw new Error(error?.message || 'Failed to fetch assessmentIndex');
   }
 
   return queryData;
@@ -47,7 +47,7 @@ const shouldShowPendingActions = computed(() => {
   return (
     data.value?.assessments.reduce(
       (acc, assessment) => acc + (assessment.pendingActionCount ?? 0),
-      0
+      0,
     ) > 0
   );
 });
@@ -56,14 +56,14 @@ const pendingActionCount = computed(() => {
   if (!data.value) return 0;
   return data.value?.assessments.reduce(
     (acc, assessment) => acc + (assessment.pendingActionCount ?? 0),
-    0
+    0,
   );
 });
 
 const percentageOptions = [
-  { label: "Default", value: null },
-  { label: "Descending", value: SortOrder.Desc },
-  { label: "Ascending", value: SortOrder.Asc },
+  { label: 'Default', value: null },
+  { label: 'Descending', value: SortOrder.Desc },
+  { label: 'Ascending', value: SortOrder.Asc },
 ];
 
 const refetchData = () => {
@@ -128,10 +128,10 @@ const refetchData = () => {
 
 <style lang="scss" scoped>
 .page {
-  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  padding: 20px;
 
   &__header {
     display: flex;
@@ -156,7 +156,7 @@ const refetchData = () => {
       grid-template-columns: repeat(2, 1fr);
     }
 
-    @media (min-width: 1024px) {
+    @media (width >= 1024px) {
       grid-template-columns: repeat(3, 1fr);
     }
   }
@@ -175,21 +175,21 @@ const refetchData = () => {
 
   &__content-header {
     display: flex;
-    align-items: center;
     gap: 15px;
+    align-items: center;
   }
 
   &__showing {
-    font-size: $text-sm;
     color: $color-gray-500;
+    font-size: $text-sm;
   }
 
   &__pending-actions {
-    border-radius: 4px;
-    background-color: $color-red-deep;
-    color: $color-white;
     padding: 2px 4px;
+    color: $color-white;
     font-size: $text-xs;
+    background-color: $color-red-deep;
+    border-radius: 4px;
   }
 
   &__filter {
@@ -203,8 +203,8 @@ const refetchData = () => {
 
   &__loading {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     height: 50dvh;
   }
 }

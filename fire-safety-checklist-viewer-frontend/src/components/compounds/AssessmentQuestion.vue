@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import StatusTip from "@/components/atoms/StatusTip.vue";
-import { graphql, getFragmentData, type FragmentType } from "@/gql";
-import BasicButton from "@/components/atoms/BasicButton.vue";
-import { formatDate } from "@/libs/datetime";
+import StatusTip from '@/components/atoms/StatusTip.vue';
+import { graphql, getFragmentData, type FragmentType } from '@/gql';
+import BasicButton from '@/components/atoms/BasicButton.vue';
+import { formatDate } from '@/libs/datetime';
 
 const assessmentQuestionFragment = graphql(`
   fragment AssessmentQuestion on AssessmentItem {
@@ -22,14 +22,14 @@ const props = defineProps<{
 }>();
 
 const sectionItem = computed(() =>
-  getFragmentData(assessmentQuestionFragment, props.maskedAssessmentQuestion)
+  getFragmentData(assessmentQuestionFragment, props.maskedAssessmentQuestion),
 );
 
-defineEmits(["openActionItemModal"]);
+defineEmits(['openActionItemModal']);
 </script>
 
 <template>
-  <div class="assessment-question" :key="sectionItem.id">
+  <div :key="sectionItem.id" class="assessment-question">
     <div class="assessment-question__title-wrapper">
       <span class="assessment-question__order">{{ index + 1 }}</span>
       <p>

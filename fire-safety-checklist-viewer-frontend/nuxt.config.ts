@@ -1,18 +1,18 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: "2025-07-15",
+  compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
 
   modules: [
-    "@nuxt/eslint",
-    "@nuxt/fonts",
-    "@nuxt/icon",
-    "@nuxt/image",
-    "nuxt-typed-router",
-    "floating-vue/nuxt",
+    '@nuxt/eslint',
+    '@nuxt/fonts',
+    '@nuxt/icon',
+    '@nuxt/image',
+    'nuxt-typed-router',
+    'floating-vue/nuxt',
   ],
 
-  srcDir: "src",
+  srcDir: 'src',
   ssr: false,
 
   devServer: {
@@ -26,9 +26,9 @@ export default defineNuxtConfig({
   },
 
   css: [
-    "@/assets/styles/global.scss",
-    "normalize.css",
-    "floating-vue/dist/style.css",
+    '@/assets/styles/global.scss',
+    'normalize.css',
+    'floating-vue/dist/style.css',
   ],
 
   vite: {

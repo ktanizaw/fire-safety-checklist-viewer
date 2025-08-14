@@ -6,7 +6,7 @@ defineProps<{
   textColor?: string;
 }>();
 
-defineEmits(["click"]);
+defineEmits(['click']);
 </script>
 
 <template>
@@ -28,15 +28,16 @@ defineEmits(["click"]);
 <style lang="scss" scoped>
 .basic-button {
   display: flex;
+  gap: 4px;
   align-items: center;
   width: fit-content;
-  gap: 4px;
   padding: 8px 12px;
-  border-radius: 8px;
-  border: 1px solid $color-gray-200;
-  cursor: pointer;
   background-color: $color-white;
+  border: 1px solid $color-gray-200;
+  border-radius: 8px;
+  cursor: pointer;
   transition: all 0.3s ease;
+
   &:hover {
     background-color: $color-gray-200;
   }

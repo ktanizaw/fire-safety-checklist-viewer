@@ -15,8 +15,8 @@ defineProps<{
 <style lang="scss" scoped>
 .icon-label {
   display: flex;
-  align-items: center;
   gap: 5px;
+  align-items: center;
 
   &__text {
     font-size: $text-sm;

@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import { graphql } from "@/gql";
-import AssessmentInfo from "@/components/compounds/AssessmentInfo.vue";
-import AssessmentSectionAccordion from "@/components/compounds/AssessmentSectionAccordion.vue";
-import BasicButton from "@/components/atoms/BasicButton.vue";
-import AssessmentQuestion from "@/components/compounds/AssessmentQuestion.vue";
-import ModalBase from "~/components/atoms/modal/ModalBase.vue";
-import ActionItemModalContent from "@/components/compounds/modal/ActionItemModalContent.vue";
-import type { ActionItem } from "@/gql/graphql";
-import LoadingSpinner from "@/components/atoms/LoadingSpinner.vue";
+import { graphql } from '@/gql';
+import AssessmentInfo from '@/components/compounds/AssessmentInfo.vue';
+import AssessmentSectionAccordion from '@/components/compounds/AssessmentSectionAccordion.vue';
+import BasicButton from '@/components/atoms/BasicButton.vue';
+import AssessmentQuestion from '@/components/compounds/AssessmentQuestion.vue';
+import ModalBase from '~/components/atoms/modal/ModalBase.vue';
+import ActionItemModalContent from '@/components/compounds/modal/ActionItemModalContent.vue';
+import type { ActionItem } from '@/gql/graphql';
+import LoadingSpinner from '@/components/atoms/LoadingSpinner.vue';
 
 const assessmentDetailDocument = graphql(`
   query assessmentDetail($id: ID!) {
@@ -41,18 +41,18 @@ const {
 
 const {
   params: { assessmentId },
-} = useRoute("assessments-assessmentId");
+} = useRoute('assessments-assessmentId');
 
 const { data, pending } = await useRequiredAsyncData(async () => {
   const { data: queryData, error } = await client.query(
     assessmentDetailDocument,
     {
       id: assessmentId,
-    }
+    },
   );
 
   if (error || !queryData) {
-    throw new Error(error?.message || "Failed to fetch assessmentDetail");
+    throw new Error(error?.message || 'Failed to fetch assessmentDetail');
   }
   return queryData;
 });
@@ -80,18 +80,18 @@ const closeActionItemModal = () => {
         <BasicButton text="Back" />
       </NuxtLink>
       <div v-if="!pending" class="page__content">
-        <AssessmentInfo :maskedAssessment="data.assessmentById" />
+        <AssessmentInfo :masked-assessment="data.assessmentById" />
         <div class="page__sections">
           <AssessmentSectionAccordion
             v-for="section in data.assessmentById.sections"
             :key="section.id"
-            :maskedAssessmentSectionAccordion="section"
+            :masked-assessment-section-accordion="section"
           >
             <div class="page__questions">
               <AssessmentQuestion
                 v-for="(item, index) in section.items"
                 :key="item.id"
-                :maskedAssessmentQuestion="item"
+                :masked-assessment-question="item"
                 :index="index"
                 @open-action-item-modal="openActionItemModal(item.actionItem)"
               />
@@ -106,7 +106,7 @@ const closeActionItemModal = () => {
     <Teleport to="body">
       <ModalBase v-if="isActionItemModalOpen && selectedActionItem">
         <ActionItemModalContent
-          :actionItem="selectedActionItem"
+          :action-item="selectedActionItem"
           @close="closeActionItemModal"
         />
       </ModalBase>

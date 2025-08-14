@@ -1,4 +1,4 @@
-import { Client, fetchExchange } from "@urql/vue";
+import { Client, fetchExchange } from '@urql/vue';
 
 export default defineNuxtPlugin(
   ({
@@ -13,15 +13,15 @@ export default defineNuxtPlugin(
             url: `${apiBase}/graphql`,
             exchanges: [fetchExchange],
             fetch,
-            requestPolicy: "network-only",
+            requestPolicy: 'network-only',
             fetchOptions: {
               headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
               },
             },
           }),
         },
       },
     };
-  }
+  },
 );

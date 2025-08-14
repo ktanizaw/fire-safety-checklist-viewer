@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { Tooltip } from "floating-vue";
-import ProgressBar from "@/components/atoms/ProgressBar.vue";
-import { graphql, getFragmentData, type FragmentType } from "@/gql";
-import StatusTip from "@/components/atoms/StatusTip.vue";
+import { Tooltip } from 'floating-vue';
+import ProgressBar from '@/components/atoms/ProgressBar.vue';
+import { graphql, getFragmentData, type FragmentType } from '@/gql';
+import StatusTip from '@/components/atoms/StatusTip.vue';
 
 const assessmentSectionAccordionFragment = graphql(`
   fragment AssessmentSectionAccordion on AssessmentSection {
@@ -23,7 +23,7 @@ const props = defineProps<{
 
 const sectionData = getFragmentData(
   assessmentSectionAccordionFragment,
-  props.maskedAssessmentSectionAccordion
+  props.maskedAssessmentSectionAccordion,
 );
 
 const isOpen = ref(false);
@@ -95,8 +95,9 @@ const isOpen = ref(false);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    cursor: pointer;
     padding: 10px 15px;
+    cursor: pointer;
+
     &:hover {
       background-color: $color-gray-100;
     }
@@ -104,20 +105,21 @@ const isOpen = ref(false);
 
   &__item-left {
     display: flex;
-    align-items: start;
     gap: 8px;
+    align-items: start;
   }
 
   &__item-right {
     display: flex;
-    align-items: center;
     gap: 8px;
+    align-items: center;
   }
 
   &__item-title-wrapper {
     display: flex;
-    align-items: center;
     gap: 4px;
+    align-items: center;
+
     @include title18px;
 
     @media (min-width: $breakpoint-sp) {
@@ -131,17 +133,18 @@ const isOpen = ref(false);
 
   &__pending-action-count {
     display: flex;
-    align-items: center;
     gap: 4px;
+    align-items: center;
     padding: 2px 4px;
-    border-radius: 4px;
-    font-size: $text-xxs;
     color: $color-white;
+    font-size: $text-xxs;
     background-color: $color-red-deep;
+    border-radius: 4px;
   }
 
   &__help-icon {
     $size: 18px;
+
     width: $size;
     height: $size;
     color: $color-gray-600;
@@ -154,6 +157,7 @@ const isOpen = ref(false);
 
   &__chevron-icon {
     $size: 18px;
+
     width: $size;
     height: $size;
     color: $color-gray-600;

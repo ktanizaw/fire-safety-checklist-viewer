@@ -11,7 +11,7 @@ defineProps<{
       <span class="progress-bar__percentage">{{ Math.round(value) }}%</span>
     </div>
     <div class="progress-bar__container">
-      <div class="progress-bar__fill" :style="{ width: `${value}%` }"></div>
+      <div class="progress-bar__fill" :style="{ width: `${value}%` }" />
     </div>
   </div>
 </template>
@@ -25,10 +25,10 @@ defineProps<{
 
   &__header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    font-weight: 500;
+    justify-content: space-between;
     color: $color-black;
+    font-weight: 500;
   }
 
   &__label {
@@ -42,9 +42,9 @@ defineProps<{
   &__container {
     width: 100%;
     height: 8px;
+    overflow: hidden;
     background-color: $color-gray-300;
     border-radius: 4px;
-    overflow: hidden;
   }
 
   &__fill {

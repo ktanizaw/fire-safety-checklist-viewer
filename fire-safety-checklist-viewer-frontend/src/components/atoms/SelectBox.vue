@@ -10,11 +10,11 @@ withDefaults(
     placeholder?: string;
   }>(),
   {
-    placeholder: "Select an option",
-  }
+    placeholder: 'Select an option',
+  },
 );
 
-const value = defineModel<Maybe<string | number>>("value", { required: true });
+const value = defineModel<Maybe<string | number>>('value', { required: true });
 </script>
 
 <template>
@@ -58,17 +58,15 @@ const value = defineModel<Maybe<string | number>>("value", { required: true });
     display: flex;
     align-items: center;
     width: 100%;
+    height: 32px;
+    padding: 7px 14px;
     color: $color-black;
+    font-size: $text-sm;
     background-color: $color-gray-100;
     border: 1px solid $color-gray-300;
     border-radius: 6px;
     cursor: pointer;
     appearance: none;
-
-    height: 32px;
-    padding: 7px 14px;
-
-    font-size: $text-sm;
 
     &::placeholder {
       color: $color-gray-500;
@@ -82,14 +80,14 @@ const value = defineModel<Maybe<string | number>>("value", { required: true });
   }
 
   &__arrow {
+    $size: 12px;
+
     position: absolute;
     top: 35%;
     right: 16px;
-    pointer-events: none;
-    $size: 12px;
-
     width: $size;
     height: $size;
+    pointer-events: none;
   }
 
   &__option {

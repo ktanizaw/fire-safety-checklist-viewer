@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 defineProps<{
-  color: "blue" | "green" | "yellow" | "red";
+  color: 'blue' | 'green' | 'yellow' | 'red';
   text: string;
 }>();
 </script>
@@ -18,27 +18,27 @@ defineProps<{
   width: fit-content;
   height: 18px;
   padding: 2px 4px;
-  border-radius: 4px;
   font-size: $text-xxs;
+  border-radius: 4px;
 
   &--blue {
-    background-color: $color-blue-light;
     color: $color-blue;
+    background-color: $color-blue-light;
   }
 
   &--green {
-    background-color: $color-green-light;
     color: $color-green;
+    background-color: $color-green-light;
   }
 
   &--yellow {
-    background-color: $color-yellow-light;
     color: $color-yellow;
+    background-color: $color-yellow-light;
   }
 
   &--red {
-    background-color: $color-red-light;
     color: $color-red;
+    background-color: $color-red-light;
   }
 }
 </style>
