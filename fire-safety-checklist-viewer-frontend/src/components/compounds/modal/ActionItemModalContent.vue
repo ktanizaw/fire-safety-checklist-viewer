@@ -1,0 +1,179 @@
+<script lang="ts" setup>
+import StatusTip from "@/components/atoms/StatusTip.vue";
+import { ActionItemStatus } from "@/gql/graphql";
+import type { ActionItem } from "@/gql/graphql";
+
+defineProps<{
+  actionItem: ActionItem;
+}>();
+
+defineEmits(["close"]);
+
+const getActionItemStatusColor = (
+  status: ActionItemStatus
+): "yellow" | "blue" => {
+  switch (status) {
+    case ActionItemStatus.Pending:
+      return "yellow";
+    case ActionItemStatus.InProgress:
+      return "blue";
+  }
+};
+</script>
+
+<template>
+  <div class="action-item-modal">
+    <div class="action-item-modal__header">
+      <div class="action-item-modal__title-wrapper">
+        <Icon name="mdi:alert-outline" class="action-item-modal__title-icon" />
+        <p class="action-item-modal__title">Action Item Details</p>
+      </div>
+      <button class="action-item-modal__close" @click="$emit('close')">
+        <Icon name="mdi:close" />
+      </button>
+    </div>
+
+    <div class="action-item-modal__content">
+      <div class="action-item-modal__row">
+        <p class="action-item-modal__label">Deficiency</p>
+        <p class="action-item-modal__value">{{ actionItem.deficiency }}</p>
+      </div>
+
+      <div class="action-item-modal__row">
+        <p class="action-item-modal__label">Proposed Action</p>
+        <p class="action-item-modal__value">{{ actionItem.proposedAction }}</p>
+      </div>
+
+      <div class="action-item-modal__grid">
+        <div class="action-item-modal__cell">
+          <p class="action-item-modal__label">Timescale</p>
+          <p class="action-item-modal__value">{{ actionItem.timescale }}</p>
+        </div>
+        <div class="action-item-modal__cell">
+          <p class="action-item-modal__label">Responsible</p>
+          <p class="action-item-modal__value">
+            {{ actionItem.personResponsible }}
+          </p>
+        </div>
+      </div>
+
+      <div class="action-item-modal__grid">
+        <div class="action-item-modal__cell">
+          <p class="action-item-modal__label">Priority</p>
+          <p class="action-item-modal__value">{{ actionItem.priority }}</p>
+        </div>
+        <div class="action-item-modal__cell">
+          <p class="action-item-modal__label">Status</p>
+          <StatusTip
+            :color="getActionItemStatusColor(actionItem.status)"
+            :text="actionItem.status"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.action-item-modal {
+  width: 600px;
+  max-width: calc(100% - 40px);
+  background-color: $color-white;
+  border-radius: 12px;
+  border: 1px solid $color-gray-200;
+  box-shadow: 0 10px 30px rgba($color-black, 0.2);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @media (max-width: $breakpoint-sp) {
+    width: calc(100% - 20px);
+    min-height: 80vh;
+    max-height: 90vh;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  &__title-icon {
+    color: $color-red;
+  }
+
+  &__title {
+    @include title18px;
+  }
+
+  &__close {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid $color-gray-200;
+    border-radius: 6px;
+    background-color: $color-white;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    &:hover {
+      background-color: $color-gray-100;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    @media (max-width: $breakpoint-sp) {
+      flex: 1;
+      overflow-y: auto;
+    }
+  }
+
+  &__row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 12px;
+    background-color: $color-gray-100;
+    border-radius: 8px;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  &__cell {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 12px;
+    background-color: $color-gray-100;
+    border-radius: 8px;
+  }
+
+  &__label {
+    color: $color-gray-600;
+    font-size: $text-xs;
+  }
+
+  &__value {
+    color: $color-gray-900;
+    font-size: $text-sm;
+    line-height: 1.4;
+    white-space: pre-wrap;
+  }
+}
+</style>
