@@ -1,39 +1,24 @@
 <script lang="ts" setup>
 import { graphql } from "@/gql";
 import AssessmentInfo from "@/components/compounds/AssessmentInfo.vue";
+import AssessmentSectionAccordion from "@/components/compounds/AssessmentSectionAccordion.vue";
+import BasicButton from "@/components/atoms/BasicButton.vue";
+import AssessmentQuestion from "@/components/compounds/AssessmentQuestion.vue";
+import ModalBase from "~/components/atoms/modal/ModalBase.vue";
+import ActionItemModalContent from "@/components/compounds/modal/ActionItemModalContent.vue";
+import type { ActionItem } from "@/gql/graphql";
 
 const assessmentDetailDocument = graphql(`
   query assessmentDetail($id: ID!) {
     assessmentById(id: $id) {
       id
-      buildingName
-      address
-      responsiblePerson
-      assessor
-      dateOfAssessment
-      useOfPremises
-      numberOfFloors
-      construction
-      maxOccupancy
-      status
-      overallCompletionPercentage
-      lastUpdated
-      nextReviewDate
       ...AssessmentInfo
       sections {
         id
-        title
-        description
-        order
-        completionPercentage
+        ...AssessmentSection
         items {
           id
-          question
-          response
-          requiresAction
-          lastUpdated
-          helpText
-          notes
+          ...AssessmentQuestion
           actionItem {
             id
             deficiency
@@ -71,16 +56,59 @@ const { data } = await useAsyncData("assessmentDetail", async () => {
 
   return queryData;
 });
+
+const isActionItemModalOpen = ref(false);
+const selectedActionItem = ref<ActionItem | null>(null);
+
+const openActionItemModal = (actionItem?: ActionItem | null) => {
+  if (actionItem) {
+    selectedActionItem.value = actionItem;
+    isActionItemModalOpen.value = true;
+  }
+};
+
+const closeActionItemModal = () => {
+  isActionItemModalOpen.value = false;
+  selectedActionItem.value = null;
+};
 </script>
 
 <template>
   <div class="page">
     <div v-if="data" class="page__content">
+      <NuxtLink to="/assessments">
+        <BasicButton text="Back" />
+      </NuxtLink>
       <AssessmentInfo :maskedAssessment="data.assessmentById" />
+      <div class="page__sections">
+        <AssessmentSectionAccordion
+          v-for="section in data.assessmentById.sections"
+          :key="section.id"
+          :maskedAssessmentSection="section"
+        >
+          <div class="page__questions">
+            <AssessmentQuestion
+              v-for="(item, index) in section.items"
+              :key="item.id"
+              :maskedAssessmentQuestion="item"
+              :index="index"
+              @open-action-item-modal="openActionItemModal(item.actionItem)"
+            />
+          </div>
+        </AssessmentSectionAccordion>
+      </div>
     </div>
     <div v-else>
       <p>Loading...</p>
     </div>
+    <Teleport to="body">
+      <ModalBase v-if="isActionItemModalOpen && selectedActionItem">
+        <ActionItemModalContent
+          :actionItem="selectedActionItem"
+          @close="closeActionItemModal"
+        />
+      </ModalBase>
+    </Teleport>
   </div>
 </template>
 
@@ -88,10 +116,24 @@ const { data } = await useAsyncData("assessmentDetail", async () => {
 .page {
   padding: 20px;
 
-  &__header {
-    border: 1px solid $color-gray-200;
-    border-radius: 10px;
-    padding: 20px;
+  &__content {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__sections {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  &__questions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 }
 </style>
