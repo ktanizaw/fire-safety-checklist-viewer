@@ -86,15 +86,28 @@ export enum AssessmentStatus {
 export type Query = {
   __typename: 'Query';
   assessmentById: Assessment;
+  assessmentByIds: Array<Assessment>;
   assessments: Array<Assessment>;
 };
 
 
 export type QueryAssessmentByIdArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryAssessmentByIdsArgs = {
+  ids: Array<Scalars['ID']['input']>;
 };
 
 export type AssessmentCardFragment = { __typename: 'Assessment', id: string, buildingName: string, address: string, status: AssessmentStatus, overallCompletionPercentage: number, lastUpdated: string, pendingActionCount?: number | null } & { ' $fragmentName'?: 'AssessmentCardFragment' };
+
+export type AssessmentDetailQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type AssessmentDetailQuery = { __typename: 'Query', assessmentById: { __typename: 'Assessment', id: string, buildingName: string, address: string, responsiblePerson: string, assessor?: string | null, dateOfAssessment?: string | null, useOfPremises: string, numberOfFloors: number, construction: string, maxOccupancy: number, status: AssessmentStatus, overallCompletionPercentage: number, lastUpdated: string, nextReviewDate?: string | null, sections: Array<{ __typename: 'AssessmentSection', id: string, title: string, description: string, order: number, completionPercentage: number, items: Array<{ __typename: 'AssessmentItem', id: string, question: string, response?: string | null, requiresAction: boolean, lastUpdated?: string | null, helpText?: string | null, notes?: string | null, actionItem?: { __typename: 'ActionItem', id: string, deficiency: string, proposedAction: string, timescale: string, personResponsible: string, priority: string, status: ActionItemStatus } | null }> }> } };
 
 export type AssessmentIndexQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -105,4 +118,5 @@ export type AssessmentIndexQuery = { __typename: 'Query', assessments: Array<(
   )> };
 
 export const AssessmentCardFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AssessmentCard"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Assessment"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"buildingName"}},{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"overallCompletionPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"lastUpdated"}},{"kind":"Field","name":{"kind":"Name","value":"pendingActionCount"}}]}}]} as unknown as DocumentNode<AssessmentCardFragment, unknown>;
+export const AssessmentDetailDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"assessmentDetail"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"assessmentById"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"buildingName"}},{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"responsiblePerson"}},{"kind":"Field","name":{"kind":"Name","value":"assessor"}},{"kind":"Field","name":{"kind":"Name","value":"dateOfAssessment"}},{"kind":"Field","name":{"kind":"Name","value":"useOfPremises"}},{"kind":"Field","name":{"kind":"Name","value":"numberOfFloors"}},{"kind":"Field","name":{"kind":"Name","value":"construction"}},{"kind":"Field","name":{"kind":"Name","value":"maxOccupancy"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"overallCompletionPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"lastUpdated"}},{"kind":"Field","name":{"kind":"Name","value":"nextReviewDate"}},{"kind":"Field","name":{"kind":"Name","value":"sections"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"order"}},{"kind":"Field","name":{"kind":"Name","value":"completionPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"question"}},{"kind":"Field","name":{"kind":"Name","value":"response"}},{"kind":"Field","name":{"kind":"Name","value":"requiresAction"}},{"kind":"Field","name":{"kind":"Name","value":"lastUpdated"}},{"kind":"Field","name":{"kind":"Name","value":"helpText"}},{"kind":"Field","name":{"kind":"Name","value":"notes"}},{"kind":"Field","name":{"kind":"Name","value":"actionItem"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"deficiency"}},{"kind":"Field","name":{"kind":"Name","value":"proposedAction"}},{"kind":"Field","name":{"kind":"Name","value":"timescale"}},{"kind":"Field","name":{"kind":"Name","value":"personResponsible"}},{"kind":"Field","name":{"kind":"Name","value":"priority"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<AssessmentDetailQuery, AssessmentDetailQueryVariables>;
 export const AssessmentIndexDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"assessmentIndex"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"assessments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"pendingActionCount"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"AssessmentCard"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AssessmentCard"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Assessment"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"buildingName"}},{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"overallCompletionPercentage"}},{"kind":"Field","name":{"kind":"Name","value":"lastUpdated"}},{"kind":"Field","name":{"kind":"Name","value":"pendingActionCount"}}]}}]} as unknown as DocumentNode<AssessmentIndexQuery, AssessmentIndexQueryVariables>;

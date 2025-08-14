@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { graphql } from "@/gql";
-import { useAsyncData } from "nuxt/app";
 import AssessmentCard from "@/components/compounds/AssessmentCard.vue";
 
 const assessmentIndexDocument = graphql(`
@@ -16,16 +15,14 @@ const {
   $urql: { client },
 } = useNuxtApp();
 
-const { data } = await useAsyncData("assessments", async () => {
+const { data } = await useAsyncData("assessmentIndex", async () => {
   const { data: queryData, error } = await client.query(
     assessmentIndexDocument,
     {}
   );
 
   if (error || !queryData) {
-    throw new Error(
-      error?.message || "Failed to fetch assessmentIndexDocument"
-    );
+    throw new Error(error?.message || "Failed to fetch assessmentIndex");
   }
 
   return queryData;
