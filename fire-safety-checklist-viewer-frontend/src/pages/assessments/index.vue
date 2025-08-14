@@ -30,6 +30,24 @@ const { data } = await useAsyncData("assessments", async () => {
 
   return queryData;
 });
+
+const shouldShowPendingActions = computed(() => {
+  if (!data.value) return false;
+  return (
+    data.value?.assessments.reduce(
+      (acc, assessment) => acc + (assessment.pendingActionCount ?? 0),
+      0
+    ) > 0
+  );
+});
+
+const pendingActionCount = computed(() => {
+  if (!data.value) return 0;
+  return data.value?.assessments.reduce(
+    (acc, assessment) => acc + (assessment.pendingActionCount ?? 0),
+    0
+  );
+});
 </script>
 
 <template>
@@ -47,13 +65,8 @@ const { data } = await useAsyncData("assessments", async () => {
           Showing {{ data.assessments.length }} of {{ data.assessments.length }}
           buildings
         </p>
-        <span class="page__pending-actions">
-          {{
-            data.assessments.reduce(
-              (acc, assessment) => acc + (assessment.pendingActionCount ?? 0),
-              0
-            )
-          }}
+        <span v-if="shouldShowPendingActions" class="page__pending-actions">
+          {{ pendingActionCount }}
           pending actions
         </span>
       </div>

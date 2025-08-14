@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { format } from "date-fns";
 import { graphql, getFragmentData, type FragmentType } from "@/gql";
 import { AssessmentStatus } from "@/gql/graphql";
 import StatusTip from "~/components/atoms/StatusTip.vue";
@@ -56,20 +57,28 @@ const getStatusColor = (status: AssessmentStatus) => {
       />
     </div>
     <ProgressBar :value="assessment.overallCompletionPercentage" />
-    <div class="assessment-card__pending-actions">
-      <Icon name="mdi:alert-outline" class="assessment-card__alert-icon" />
-      <p class="assessment-card__pending-actions-text">
-        {{ assessment.pendingActionCount }} pending actions
-      </p>
-    </div>
-    <div class="assessment-card__last-updated">
-      <Icon
-        name="mdi:calendar-blank-outline"
-        class="assessment-card__calendar-icon"
-      />
-      <p class="assessment-card__last-updated-text">
-        Last updated {{ new Date(assessment.lastUpdated).toLocaleDateString() }}
-      </p>
+    <div class="assessment-card__footer">
+      <div
+        v-if="
+          assessment.pendingActionCount && assessment.pendingActionCount > 0
+        "
+        class="assessment-card__pending-actions"
+      >
+        <Icon name="mdi:alert-outline" class="assessment-card__alert-icon" />
+        <p class="assessment-card__pending-actions-text">
+          {{ assessment.pendingActionCount }} pending actions
+        </p>
+      </div>
+      <div class="assessment-card__last-updated">
+        <Icon
+          name="mdi:calendar-blank-outline"
+          class="assessment-card__calendar-icon"
+        />
+        <p class="assessment-card__last-updated-text">
+          Last updated
+          {{ format(new Date(assessment.lastUpdated), "MMM d,yyyy") }}
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -80,9 +89,10 @@ const getStatusColor = (status: AssessmentStatus) => {
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  justify-content: space-between;
   cursor: pointer;
   transition: box-shadow 0.3s ease;
+  height: 200px;
 
   &:hover {
     box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
@@ -148,6 +158,12 @@ const getStatusColor = (status: AssessmentStatus) => {
 
   &__pending-actions-text {
     font-size: $text-sm;
+  }
+
+  &__footer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 
   &__last-updated {

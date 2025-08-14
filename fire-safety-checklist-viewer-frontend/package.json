@@ -17,6 +17,7 @@
     "@nuxt/icon": "^2.0.0",
     "@nuxt/image": "^1.11.0",
     "@urql/vue": "^2.0.0",
+    "date-fns": "^4.1.0",
     "eslint": "^9.33.0",
     "graphql": "^16.11.0",
     "normalize.css": "^8.0.1",
