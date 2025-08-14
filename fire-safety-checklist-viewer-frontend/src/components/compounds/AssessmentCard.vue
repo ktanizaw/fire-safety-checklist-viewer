@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { format } from "date-fns";
 import { graphql, getFragmentData, type FragmentType } from "@/gql";
-import { AssessmentStatus } from "@/gql/graphql";
 import StatusTip from "~/components/atoms/StatusTip.vue";
 import ProgressBar from "@/components/atoms/ProgressBar.vue";
+import { getStatusColor } from "@/libs/assessment/status";
 
 const assessmentCardFragment = graphql(`
   fragment AssessmentCard on Assessment {
@@ -26,17 +26,8 @@ const assessment = getFragmentData(
   props.maskedAssessment
 );
 
-const getStatusColor = (status: AssessmentStatus) => {
-  switch (status) {
-    case AssessmentStatus.InProgress:
-      return "blue";
-    case AssessmentStatus.Completed:
-      return "green";
-    case AssessmentStatus.Draft:
-      return "yellow";
-    case AssessmentStatus.RequiresReview:
-      return "red";
-  }
+const toAssesssmentDetail = () => {
+  navigateTo(`/assessments/${assessment.id}`);
 };
 </script>
 
@@ -44,6 +35,7 @@ const getStatusColor = (status: AssessmentStatus) => {
   <div
     class="assessment-card"
     :class="`assessment-card--${getStatusColor(assessment.status)}`"
+    @click="toAssesssmentDetail"
   >
     <div class="assessment-card__header">
       <Icon name="mdi:office-building" class="assessment-card__icon" />
