@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "@nuxt/image",
     "nuxt-typed-router",
+    "floating-vue/nuxt",
   ],
 
   srcDir: "src",
@@ -24,7 +25,11 @@ export default defineNuxtConfig({
     },
   },
 
-  css: ["@/assets/styles/global.scss", "normalize.css"],
+  css: [
+    "@/assets/styles/global.scss",
+    "normalize.css",
+    "floating-vue/dist/style.css",
+  ],
 
   vite: {
     css: {
