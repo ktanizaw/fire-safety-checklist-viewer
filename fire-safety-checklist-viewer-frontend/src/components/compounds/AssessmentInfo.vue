@@ -149,8 +149,6 @@ const assessment = getFragmentData(
   flex-direction: column;
   gap: 16px;
   padding: 24px;
-  max-width: 960px;
-  margin: 0 auto;
   border: 1px solid $color-gray-200;
   border-radius: 12px;
 

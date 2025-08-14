@@ -105,7 +105,7 @@ const pendingActionCount = computed(() => {
     grid-template-columns: 1fr;
     gap: 15px;
 
-    @media (min-width: 600px) {
+    @media (min-width: $breakpoint-sp) {
       grid-template-columns: repeat(2, 1fr);
     }
 
