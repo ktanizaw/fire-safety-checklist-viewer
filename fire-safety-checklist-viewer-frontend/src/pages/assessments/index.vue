@@ -4,6 +4,7 @@ import AssessmentCard from "@/components/compounds/AssessmentCard.vue";
 import SelectBox from "@/components/atoms/SelectBox.vue";
 import { STATUS_OPTIONS } from "@/libs/assessment/status";
 import { SortOrder } from "@/gql/graphql";
+import LoadingSpinner from "@/components/atoms/LoadingSpinner.vue";
 
 const assessmentIndexDocument = graphql(`
   query assessmentIndex($filter: AssessmentFilter, $sort: AssessmentSort) {
@@ -22,7 +23,7 @@ const {
 const statusValue = ref<string>("");
 const percentageValue = ref<Maybe<SortOrder>>(null);
 
-const { data, refresh } = await useAsyncData(async () => {
+const { data, refresh, pending } = await useRequiredAsyncData(async () => {
   const { data: queryData, error } = await client.query(
     assessmentIndexDocument,
     {
@@ -34,7 +35,6 @@ const { data, refresh } = await useAsyncData(async () => {
       },
     }
   );
-
   if (error || !queryData) {
     throw new Error(error?.message || "Failed to fetch assessmentIndex");
   }
@@ -80,7 +80,7 @@ const refetchData = () => {
         properties
       </p>
     </div>
-    <div v-if="data" class="page__content">
+    <div class="page__container">
       <div class="page__filter">
         <SelectBox
           v-model:value="statusValue"
@@ -97,25 +97,32 @@ const refetchData = () => {
           @update:value="refetchData"
         />
       </div>
-      <div class="page__content-header">
-        <p class="page__showing">
-          Showing {{ data.assessments.length }} of {{ data.assessments.length }}
-          buildings
-        </p>
-        <span v-if="shouldShowPendingActions" class="page__pending-actions">
-          {{ pendingActionCount }}
-          pending actions
-        </span>
-      </div>
-      <div class="page__assessments">
-        <AssessmentCard
-          v-for="assessment in data.assessments"
-          :key="assessment.id"
-          :masked-assessment="assessment"
-        />
-      </div>
+      <Transition name="fade" mode="out-in">
+        <div v-if="!pending" key="content" class="page__content">
+          <div class="page__content-header">
+            <p class="page__showing">
+              Showing {{ data.assessments.length }} of
+              {{ data.assessments.length }}
+              buildings
+            </p>
+            <span v-if="shouldShowPendingActions" class="page__pending-actions">
+              {{ pendingActionCount }}
+              pending actions
+            </span>
+          </div>
+          <div class="page__assessments">
+            <AssessmentCard
+              v-for="assessment in data.assessments"
+              :key="assessment.id"
+              :masked-assessment="assessment"
+            />
+          </div>
+        </div>
+        <div v-else key="loading" class="page__loading">
+          <LoadingSpinner />
+        </div>
+      </Transition>
     </div>
-    <div v-else>Loading...</div>
   </div>
 </template>
 
@@ -154,6 +161,12 @@ const refetchData = () => {
     }
   }
 
+  &__container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
   &__content {
     display: flex;
     flex-direction: column;
@@ -187,5 +200,23 @@ const refetchData = () => {
   &__select-box {
     width: 150px;
   }
+
+  &__loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50dvh;
+  }
+}
+
+// フェードアニメーション
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

@@ -7,6 +7,7 @@ import AssessmentQuestion from "@/components/compounds/AssessmentQuestion.vue";
 import ModalBase from "~/components/atoms/modal/ModalBase.vue";
 import ActionItemModalContent from "@/components/compounds/modal/ActionItemModalContent.vue";
 import type { ActionItem } from "@/gql/graphql";
+import LoadingSpinner from "@/components/atoms/LoadingSpinner.vue";
 
 const assessmentDetailDocument = graphql(`
   query assessmentDetail($id: ID!) {
@@ -42,7 +43,7 @@ const {
   params: { assessmentId },
 } = useRoute("assessments-assessmentId");
 
-const { data } = await useAsyncData("assessmentDetail", async () => {
+const { data, pending } = await useRequiredAsyncData(async () => {
   const { data: queryData, error } = await client.query(
     assessmentDetailDocument,
     {
@@ -53,7 +54,6 @@ const { data } = await useAsyncData("assessmentDetail", async () => {
   if (error || !queryData) {
     throw new Error(error?.message || "Failed to fetch assessmentDetail");
   }
-
   return queryData;
 });
 
@@ -75,31 +75,33 @@ const closeActionItemModal = () => {
 
 <template>
   <div class="page">
-    <div v-if="data" class="page__content">
+    <div class="page__container">
       <NuxtLink to="/assessments">
         <BasicButton text="Back" />
       </NuxtLink>
-      <AssessmentInfo :maskedAssessment="data.assessmentById" />
-      <div class="page__sections">
-        <AssessmentSectionAccordion
-          v-for="section in data.assessmentById.sections"
-          :key="section.id"
-          :maskedAssessmentSectionAccordion="section"
-        >
-          <div class="page__questions">
-            <AssessmentQuestion
-              v-for="(item, index) in section.items"
-              :key="item.id"
-              :maskedAssessmentQuestion="item"
-              :index="index"
-              @open-action-item-modal="openActionItemModal(item.actionItem)"
-            />
-          </div>
-        </AssessmentSectionAccordion>
+      <div v-if="!pending" class="page__content">
+        <AssessmentInfo :maskedAssessment="data.assessmentById" />
+        <div class="page__sections">
+          <AssessmentSectionAccordion
+            v-for="section in data.assessmentById.sections"
+            :key="section.id"
+            :maskedAssessmentSectionAccordion="section"
+          >
+            <div class="page__questions">
+              <AssessmentQuestion
+                v-for="(item, index) in section.items"
+                :key="item.id"
+                :maskedAssessmentQuestion="item"
+                :index="index"
+                @open-action-item-modal="openActionItemModal(item.actionItem)"
+              />
+            </div>
+          </AssessmentSectionAccordion>
+        </div>
       </div>
-    </div>
-    <div v-else>
-      <p>Loading...</p>
+      <div v-else class="page__loading">
+        <LoadingSpinner />
+      </div>
     </div>
     <Teleport to="body">
       <ModalBase v-if="isActionItemModalOpen && selectedActionItem">
@@ -111,14 +113,19 @@ const closeActionItemModal = () => {
     </Teleport>
   </div>
 </template>
-
 <style lang="scss" scoped>
 .page {
   padding: 20px;
 
-  &__content {
+  &__container {
     max-width: 960px;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__content {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -134,6 +141,13 @@ const closeActionItemModal = () => {
     display: flex;
     flex-direction: column;
     gap: 10px;
+  }
+
+  &__loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50dvh;
   }
 }
 </style>
