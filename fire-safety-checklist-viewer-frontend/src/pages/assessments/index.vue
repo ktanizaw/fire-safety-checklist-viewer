@@ -68,7 +68,7 @@ const pendingActionCount = computed(() => {
         </span>
       </div>
       <div class="page__assessments">
-        <assessmentCard
+        <AssessmentCard
           v-for="(assessment, index) in data.assessments"
           :key="index"
           :masked-assessment="assessment"
