@@ -1,23 +1,23 @@
 <script lang="ts" setup>
-import StatusTip from '@/components/atoms/StatusTip.vue';
-import type { ActionItem } from '@/gql/graphql';
+  import StatusTip from '@/components/atoms/StatusTip.vue';
+  import type { ActionItem } from '@/gql/graphql';
 
-defineProps<{
-  actionItem: ActionItem;
-}>();
+  defineProps<{
+    actionItem: ActionItem;
+  }>();
 
-defineEmits(['close']);
+  defineEmits(['close']);
 
-const getActionItemStatusColor = (status: string): 'yellow' | 'blue' => {
-  switch (status) {
-    case 'pending':
-      return 'yellow';
-    case 'in_progress':
-      return 'blue';
-    default:
-      return 'yellow';
-  }
-};
+  const getActionItemStatusColor = (status: string): 'yellow' | 'blue' => {
+    switch (status) {
+      case 'pending':
+        return 'yellow';
+      case 'in_progress':
+        return 'blue';
+      default:
+        return 'yellow';
+    }
+  };
 </script>
 
 <template>
@@ -74,106 +74,106 @@ const getActionItemStatusColor = (status: string): 'yellow' | 'blue' => {
 </template>
 
 <style lang="scss" scoped>
-.action-item-modal {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  width: 600px;
-  max-width: calc(100% - 40px);
-  padding: 16px;
-  background-color: $color-white;
-  border: 1px solid $color-gray-200;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba($color-black, 0.2);
-
-  @media (max-width: $breakpoint-sp) {
-    width: calc(100% - 20px);
-    min-height: 80vh;
-    max-height: 90vh;
-  }
-
-  &__header {
+  .action-item-modal {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  &__title-wrapper {
-    display: flex;
-    gap: 6px;
-    align-items: center;
-  }
-
-  &__title-icon {
-    color: $color-red;
-  }
-
-  &__title {
-    @include title18px;
-  }
-
-  &__close {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
+    flex-direction: column;
+    gap: 16px;
+    width: 600px;
+    max-width: calc(100% - 40px);
+    padding: 16px;
     background-color: $color-white;
     border: 1px solid $color-gray-200;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-
-    &:hover {
-      background-color: $color-gray-100;
-    }
-  }
-
-  &__content {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba($color-black, 0.2);
 
     @media (max-width: $breakpoint-sp) {
-      flex: 1;
-      overflow-y: auto;
+      width: calc(100% - 20px);
+      min-height: 80vh;
+      max-height: 90vh;
+    }
+
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    &__title-wrapper {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    &__title-icon {
+      color: $color-red;
+    }
+
+    &__title {
+      @include title18px;
+    }
+
+    &__close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background-color: $color-white;
+      border: 1px solid $color-gray-200;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: $color-gray-100;
+      }
+    }
+
+    &__content {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      @media (max-width: $breakpoint-sp) {
+        flex: 1;
+        overflow-y: auto;
+      }
+    }
+
+    &__row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 10px 12px;
+      background-color: $color-gray-100;
+      border-radius: 8px;
+    }
+
+    &__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    &__cell {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 10px 12px;
+      background-color: $color-gray-100;
+      border-radius: 8px;
+    }
+
+    &__label {
+      color: $color-gray-600;
+      font-size: $text-xs;
+    }
+
+    &__value {
+      color: $color-gray-900;
+      font-size: $text-sm;
+      line-height: 1.4;
+      white-space: pre-wrap;
     }
   }
-
-  &__row {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: 10px 12px;
-    background-color: $color-gray-100;
-    border-radius: 8px;
-  }
-
-  &__grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-
-  &__cell {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: 10px 12px;
-    background-color: $color-gray-100;
-    border-radius: 8px;
-  }
-
-  &__label {
-    color: $color-gray-600;
-    font-size: $text-xs;
-  }
-
-  &__value {
-    color: $color-gray-900;
-    font-size: $text-sm;
-    line-height: 1.4;
-    white-space: pre-wrap;
-  }
-}
 </style>

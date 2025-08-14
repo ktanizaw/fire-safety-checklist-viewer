@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-defineProps<{
-  icon?: string;
-  iconColor?: string;
-  text: string;
-  textColor?: string;
-}>();
+  defineProps<{
+    icon?: string;
+    iconColor?: string;
+    text: string;
+    textColor?: string;
+  }>();
 
-defineEmits(['click']);
+  defineEmits(['click']);
 </script>
 
 <template>
@@ -26,36 +26,36 @@ defineEmits(['click']);
 </template>
 
 <style lang="scss" scoped>
-.basic-button {
-  display: flex;
-  gap: 4px;
-  align-items: center;
-  width: fit-content;
-  padding: 8px 12px;
-  background-color: $color-white;
-  border: 1px solid $color-gray-200;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  .basic-button {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    width: fit-content;
+    padding: 8px 12px;
+    background-color: $color-white;
+    border: 1px solid $color-gray-200;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 
-  &:hover {
-    background-color: $color-gray-200;
-  }
+    &:hover {
+      background-color: $color-gray-200;
+    }
 
-  &__icon {
-    color: $color-gray-600;
+    &__icon {
+      color: $color-gray-600;
 
-    &--red {
-      color: $color-red;
+      &--red {
+        color: $color-red;
+      }
+    }
+
+    &__text {
+      font-size: $text-sm;
+
+      &--red {
+        color: $color-red;
+      }
     }
   }
-
-  &__text {
-    font-size: $text-sm;
-
-    &--red {
-      color: $color-red;
-    }
-  }
-}
 </style>

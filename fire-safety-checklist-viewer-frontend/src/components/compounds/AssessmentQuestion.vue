@@ -1,31 +1,31 @@
 <script lang="ts" setup>
-import StatusTip from '@/components/atoms/StatusTip.vue';
-import { graphql, getFragmentData, type FragmentType } from '@/gql';
-import BasicButton from '@/components/atoms/BasicButton.vue';
-import { formatDate } from '@/libs/datetime';
+  import StatusTip from '@/components/atoms/StatusTip.vue';
+  import { graphql, getFragmentData, type FragmentType } from '@/gql';
+  import BasicButton from '@/components/atoms/BasicButton.vue';
+  import { formatDate } from '@/libs/datetime';
 
-const assessmentQuestionFragment = graphql(`
-  fragment AssessmentQuestion on AssessmentItem {
-    id
-    question
-    response
-    requiresAction
-    lastUpdated
-    helpText
-    notes
-  }
-`);
+  const assessmentQuestionFragment = graphql(`
+    fragment AssessmentQuestion on AssessmentItem {
+      id
+      question
+      response
+      requiresAction
+      lastUpdated
+      helpText
+      notes
+    }
+  `);
 
-const props = defineProps<{
-  maskedAssessmentQuestion: FragmentType<typeof assessmentQuestionFragment>;
-  index: number;
-}>();
+  const props = defineProps<{
+    maskedAssessmentQuestion: FragmentType<typeof assessmentQuestionFragment>;
+    index: number;
+  }>();
 
-const sectionItem = computed(() =>
-  getFragmentData(assessmentQuestionFragment, props.maskedAssessmentQuestion),
-);
+  const sectionItem = computed(() =>
+    getFragmentData(assessmentQuestionFragment, props.maskedAssessmentQuestion),
+  );
 
-defineEmits(['openActionItemModal']);
+  defineEmits(['openActionItemModal']);
 </script>
 
 <template>
@@ -86,122 +86,124 @@ defineEmits(['openActionItemModal']);
 </template>
 
 <style lang="scss" scoped>
-.assessment-question {
-  padding: 10px 15px;
-  border-radius: 10px;
-  border: 1px solid $color-gray-200;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-
-  &__title-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    @include title16px;
-
-    @media (min-width: $breakpoint-sp) {
-      @include title14px;
-    }
-  }
-
-  &__order {
-    $size: 24px;
-    width: $size;
-    height: $size;
-    background-color: $color-black;
-    color: $color-white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  &__help {
-    background-color: $color-blue-lighter;
-    border: 1px solid $color-blue-light;
-    border-radius: 4px;
-    padding: 5px 10px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  &__help-icon {
-    color: $color-blue;
-  }
-
-  &__help-text {
-    font-size: $text-xs;
-    color: $color-blue;
-  }
-
-  &__response {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  &__response-label {
-    color: $color-gray-500;
-    font-size: $text-xs;
-  }
-
-  &__no-response {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  &__no-response-label {
-    color: $color-gray-500;
-    font-size: $text-xs;
-  }
-
-  &__no-response-text {
-    color: $color-gray-900;
-    font-size: $text-xs;
-  }
-
-  &__item-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  &__last-updated {
-    color: $color-gray-600;
-    font-size: $text-xs;
-  }
-
-  &__notes {
+  .assessment-question {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    background-color: $color-gray-100;
-    border-radius: 4px;
-    padding: 5px 10px;
-  }
+    padding: 10px 15px;
+    border: 1px solid $color-gray-200;
+    border-radius: 10px;
 
-  &__notes-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
+    &__title-wrapper {
+      display: flex;
+      gap: 4px;
+      align-items: center;
 
-  &__notes-icon {
-    color: $color-gray-500;
-  }
+      @include title16px;
 
-  &__notes-title {
-    color: $color-gray-500;
-    font-size: $text-xs;
-  }
+      @media (min-width: $breakpoint-sp) {
+        @include title14px;
+      }
+    }
 
-  &__notes-text {
-    color: $color-gray-900;
-    font-size: $text-xs;
+    &__order {
+      $size: 24px;
+
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      width: $size;
+      height: $size;
+      color: $color-white;
+      background-color: $color-black;
+      border-radius: 50%;
+    }
+
+    &__help {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      padding: 5px 10px;
+      background-color: $color-blue-lighter;
+      border: 1px solid $color-blue-light;
+      border-radius: 4px;
+    }
+
+    &__help-icon {
+      color: $color-blue;
+    }
+
+    &__help-text {
+      color: $color-blue;
+      font-size: $text-xs;
+    }
+
+    &__response {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    &__response-label {
+      color: $color-gray-500;
+      font-size: $text-xs;
+    }
+
+    &__no-response {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    &__no-response-label {
+      color: $color-gray-500;
+      font-size: $text-xs;
+    }
+
+    &__no-response-text {
+      color: $color-gray-900;
+      font-size: $text-xs;
+    }
+
+    &__item-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    &__last-updated {
+      color: $color-gray-600;
+      font-size: $text-xs;
+    }
+
+    &__notes {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 5px 10px;
+      background-color: $color-gray-100;
+      border-radius: 4px;
+    }
+
+    &__notes-wrapper {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    &__notes-icon {
+      color: $color-gray-500;
+    }
+
+    &__notes-title {
+      color: $color-gray-500;
+      font-size: $text-xs;
+    }
+
+    &__notes-text {
+      color: $color-gray-900;
+      font-size: $text-xs;
+    }
   }
-}
 </style>

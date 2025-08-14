@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-defineProps<{
-  value: number;
-}>();
+  defineProps<{
+    value: number;
+  }>();
 </script>
 
 <template>
@@ -17,41 +17,41 @@ defineProps<{
 </template>
 
 <style lang="scss" scoped>
-.progress-bar {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: 100%;
-
-  &__header {
+  .progress-bar {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    color: $color-black;
-    font-weight: 500;
-  }
-
-  &__label {
-    font-size: 14px;
-  }
-
-  &__percentage {
-    font-size: 14px;
-  }
-
-  &__container {
+    flex-direction: column;
+    gap: 8px;
     width: 100%;
-    height: 8px;
-    overflow: hidden;
-    background-color: $color-gray-300;
-    border-radius: 4px;
-  }
 
-  &__fill {
-    height: 100%;
-    background-color: $color-gray-700;
-    border-radius: 4px;
-    transition: width 0.3s ease;
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: $color-black;
+      font-weight: 500;
+    }
+
+    &__label {
+      font-size: 14px;
+    }
+
+    &__percentage {
+      font-size: 14px;
+    }
+
+    &__container {
+      width: 100%;
+      height: 8px;
+      overflow: hidden;
+      background-color: $color-gray-300;
+      border-radius: 4px;
+    }
+
+    &__fill {
+      height: 100%;
+      background-color: $color-gray-700;
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
   }
-}
 </style>

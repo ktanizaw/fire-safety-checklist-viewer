@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { provideClient } from '@urql/vue';
+  import { provideClient } from '@urql/vue';
 
-const {
-  $urql: { client },
-} = useNuxtApp();
+  const {
+    $urql: { client },
+  } = useNuxtApp();
 
-provideClient(client);
+  provideClient(client);
 </script>
 
 <template>
