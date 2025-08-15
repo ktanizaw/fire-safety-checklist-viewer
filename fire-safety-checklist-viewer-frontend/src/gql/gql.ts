@@ -19,7 +19,7 @@ type Documents = {
   '\n  fragment AssessmentQuestion on AssessmentItem {\n    id\n    question\n    response\n    requiresAction\n    lastUpdated\n    helpText\n    notes\n  }\n': typeof types.AssessmentQuestionFragmentDoc;
   '\n  fragment AssessmentSectionAccordion on AssessmentSection {\n    id\n    title\n    description\n    order\n    completionPercentage\n    pendingActionCount\n  }\n': typeof types.AssessmentSectionAccordionFragmentDoc;
   '\n  query assessmentDetail($id: ID!) {\n    assessmentById(id: $id) {\n      id\n      ...AssessmentInfo\n      sections {\n        id\n        ...AssessmentSectionAccordion\n        items {\n          id\n          ...AssessmentQuestion\n          actionItem {\n            id\n            deficiency\n            proposedAction\n            timescale\n            personResponsible\n            priority\n            status\n          }\n        }\n      }\n    }\n  }\n': typeof types.AssessmentDetailDocument;
-  '\n  query assessmentIndex($filter: AssessmentFilter, $sort: AssessmentSort) {\n    assessments(filter: $filter, sort: $sort) {\n      pendingActionCount\n      id\n      ...AssessmentCard\n    }\n  }\n': typeof types.AssessmentIndexDocument;
+  '\n  query assessmentIndex($filter: AssessmentFilter, $sort: AssessmentSort) {\n    assessments(filter: $filter, sort: $sort) {\n      pendingActionCount\n      id\n      status\n      overallCompletionPercentage\n      ...AssessmentCard\n    }\n  }\n': typeof types.AssessmentIndexDocument;
 };
 const documents: Documents = {
   '\n  fragment AssessmentCard on Assessment {\n    id\n    buildingName\n    address\n    status\n    overallCompletionPercentage\n    lastUpdated\n    pendingActionCount\n  }\n':
@@ -32,7 +32,7 @@ const documents: Documents = {
     types.AssessmentSectionAccordionFragmentDoc,
   '\n  query assessmentDetail($id: ID!) {\n    assessmentById(id: $id) {\n      id\n      ...AssessmentInfo\n      sections {\n        id\n        ...AssessmentSectionAccordion\n        items {\n          id\n          ...AssessmentQuestion\n          actionItem {\n            id\n            deficiency\n            proposedAction\n            timescale\n            personResponsible\n            priority\n            status\n          }\n        }\n      }\n    }\n  }\n':
     types.AssessmentDetailDocument,
-  '\n  query assessmentIndex($filter: AssessmentFilter, $sort: AssessmentSort) {\n    assessments(filter: $filter, sort: $sort) {\n      pendingActionCount\n      id\n      ...AssessmentCard\n    }\n  }\n':
+  '\n  query assessmentIndex($filter: AssessmentFilter, $sort: AssessmentSort) {\n    assessments(filter: $filter, sort: $sort) {\n      pendingActionCount\n      id\n      status\n      overallCompletionPercentage\n      ...AssessmentCard\n    }\n  }\n':
     types.AssessmentIndexDocument,
 };
 
@@ -84,8 +84,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query assessmentIndex($filter: AssessmentFilter, $sort: AssessmentSort) {\n    assessments(filter: $filter, sort: $sort) {\n      pendingActionCount\n      id\n      ...AssessmentCard\n    }\n  }\n',
-): (typeof documents)['\n  query assessmentIndex($filter: AssessmentFilter, $sort: AssessmentSort) {\n    assessments(filter: $filter, sort: $sort) {\n      pendingActionCount\n      id\n      ...AssessmentCard\n    }\n  }\n'];
+  source: '\n  query assessmentIndex($filter: AssessmentFilter, $sort: AssessmentSort) {\n    assessments(filter: $filter, sort: $sort) {\n      pendingActionCount\n      id\n      status\n      overallCompletionPercentage\n      ...AssessmentCard\n    }\n  }\n',
+): (typeof documents)['\n  query assessmentIndex($filter: AssessmentFilter, $sort: AssessmentSort) {\n    assessments(filter: $filter, sort: $sort) {\n      pendingActionCount\n      id\n      status\n      overallCompletionPercentage\n      ...AssessmentCard\n    }\n  }\n'];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

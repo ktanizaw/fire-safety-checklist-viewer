@@ -216,6 +216,8 @@ export type AssessmentIndexQuery = {
       __typename: 'Assessment';
       pendingActionCount?: number | null;
       id: string;
+      status: string;
+      overallCompletionPercentage: number;
     } & {
       ' $fragmentRefs'?: { AssessmentCardFragment: AssessmentCardFragment };
     }
@@ -610,6 +612,11 @@ export const AssessmentIndexDocument = {
                   name: { kind: 'Name', value: 'pendingActionCount' },
                 },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'status' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'overallCompletionPercentage' },
+                },
                 {
                   kind: 'FragmentSpread',
                   name: { kind: 'Name', value: 'AssessmentCard' },

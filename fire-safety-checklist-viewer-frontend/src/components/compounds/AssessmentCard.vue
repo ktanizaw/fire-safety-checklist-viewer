@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import { graphql, getFragmentData, type FragmentType } from '@/gql';
 import StatusTip from '~/components/atoms/StatusTip.vue';
 import ProgressBar from '@/components/atoms/ProgressBar.vue';
-import { getStatusColor } from '@/libs/assessment/status';
+import { getAssessmentStatusData } from '@/libs/assessment/status';
 
 const assessmentCardFragment = graphql(`
   fragment AssessmentCard on Assessment {
@@ -34,7 +34,7 @@ const toAssessmentDetail = () => {
 <template>
   <div
     class="assessment-card"
-    :class="`assessment-card--${getStatusColor(assessment.status)}`"
+    :class="`assessment-card--${getAssessmentStatusData(assessment.status).color}`"
     @click="toAssessmentDetail"
   >
     <div class="assessment-card__header">
@@ -46,8 +46,8 @@ const toAssessmentDetail = () => {
         </div>
       </div>
       <StatusTip
-        :color="getStatusColor(assessment.status)"
-        :text="assessment.status"
+        :color="getAssessmentStatusData(assessment.status).color"
+        :text="getAssessmentStatusData(assessment.status).text"
       />
     </div>
     <ProgressBar :value="assessment.overallCompletionPercentage" />

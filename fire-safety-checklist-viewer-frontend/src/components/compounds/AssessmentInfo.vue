@@ -2,7 +2,7 @@
 import { formatDate } from '@/libs/datetime';
 import StatusTip from '~/components/atoms/StatusTip.vue';
 import { graphql, getFragmentData, type FragmentType } from '@/gql';
-import { getStatusColor } from '@/libs/assessment/status';
+import { getAssessmentStatusData } from '@/libs/assessment/status';
 import ProgressBar from '@/components/atoms/ProgressBar.vue';
 import IconLabel from '@/components/atoms/IconLabel.vue';
 
@@ -54,8 +54,8 @@ const assessment = getFragmentData(
             </p>
           </div>
           <StatusTip
-            :color="getStatusColor(assessment.status)"
-            :text="assessment.status"
+            :color="getAssessmentStatusData(assessment.status).color"
+            :text="getAssessmentStatusData(assessment.status).text"
           />
         </div>
       </div>
@@ -75,7 +75,7 @@ const assessment = getFragmentData(
         <p class="assessment-info__text">{{ assessment.assessor }}</p>
       </div>
     </div>
-    <hr />
+    <hr >
 
     <IconLabel icon="mdi:calendar-blank-outline" text="Assessment Timeline" />
 
@@ -100,7 +100,7 @@ const assessment = getFragmentData(
       </div>
     </div>
 
-    <hr />
+    <hr >
 
     <IconLabel icon="mdi:office-building" text="Building Information" />
 
