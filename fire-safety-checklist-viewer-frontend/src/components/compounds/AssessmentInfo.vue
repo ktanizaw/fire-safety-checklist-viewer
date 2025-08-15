@@ -1,38 +1,38 @@
 <script lang="ts" setup>
-  import { formatDate } from '@/libs/datetime';
-  import StatusTip from '~/components/atoms/StatusTip.vue';
-  import { graphql, getFragmentData, type FragmentType } from '@/gql';
-  import { getStatusColor } from '@/libs/assessment/status';
-  import ProgressBar from '@/components/atoms/ProgressBar.vue';
-  import IconLabel from '@/components/atoms/IconLabel.vue';
+import { formatDate } from '@/libs/datetime';
+import StatusTip from '~/components/atoms/StatusTip.vue';
+import { graphql, getFragmentData, type FragmentType } from '@/gql';
+import { getStatusColor } from '@/libs/assessment/status';
+import ProgressBar from '@/components/atoms/ProgressBar.vue';
+import IconLabel from '@/components/atoms/IconLabel.vue';
 
-  const assessmentInfoFragment = graphql(`
-    fragment AssessmentInfo on Assessment {
-      id
-      buildingName
-      address
-      status
-      overallCompletionPercentage
-      lastUpdated
-      responsiblePerson
-      assessor
-      dateOfAssessment
-      useOfPremises
-      numberOfFloors
-      construction
-      maxOccupancy
-      nextReviewDate
-    }
-  `);
+const assessmentInfoFragment = graphql(`
+  fragment AssessmentInfo on Assessment {
+    id
+    buildingName
+    address
+    status
+    overallCompletionPercentage
+    lastUpdated
+    responsiblePerson
+    assessor
+    dateOfAssessment
+    useOfPremises
+    numberOfFloors
+    construction
+    maxOccupancy
+    nextReviewDate
+  }
+`);
 
-  const props = defineProps<{
-    maskedAssessment: FragmentType<typeof assessmentInfoFragment>;
-  }>();
+const props = defineProps<{
+  maskedAssessment: FragmentType<typeof assessmentInfoFragment>;
+}>();
 
-  const assessment = getFragmentData(
-    assessmentInfoFragment,
-    props.maskedAssessment,
-  );
+const assessment = getFragmentData(
+  assessmentInfoFragment,
+  props.maskedAssessment,
+);
 </script>
 
 <template>
@@ -144,164 +144,164 @@
 </template>
 
 <style lang="scss" scoped>
-  .assessment-info {
+.assessment-info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  border: 1px solid $color-gray-200;
+  border-radius: 12px;
+
+  &__header {
     display: flex;
-    flex-direction: column;
-    gap: 16px;
-    padding: 24px;
-    border: 1px solid $color-gray-200;
-    border-radius: 12px;
+    align-items: flex-start;
+    justify-content: space-between;
 
-    &__header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-
-      @media (max-width: $breakpoint-sp) {
-        flex-direction: column;
-        gap: 12px;
-      }
-    }
-
-    &__header-left {
-      display: flex;
+    @media (max-width: $breakpoint-sp) {
+      flex-direction: column;
       gap: 12px;
     }
-
-    &__title-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    &__title-icon {
-      $size: 24px;
-
-      width: $size;
-      height: $size;
-    }
-
-    &__title {
-      @include title20px;
-    }
-
-    &__address-wrapper {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-    }
-
-    &__address-icon {
-      $size: 12px;
-
-      width: $size;
-      height: $size;
-    }
-
-    &__address {
-      color: $color-gray-500;
-      font-size: $text-xs;
-    }
-
-    &__header-right {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      align-items: flex-end;
-      width: 300px;
-
-      @media (max-width: $breakpoint-sp) {
-        align-items: stretch;
-        width: 100%;
-      }
-    }
-
-    &__person-info {
-      display: flex;
-      gap: 20px;
-    }
-
-    &__person-info-item {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    &__text {
-      font-size: $text-sm;
-    }
-
-    hr {
-      margin: 8px 0;
-      border: 0;
-      border-top: 1px solid $color-gray-200;
-    }
   }
 
-  .assessment-timeline {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
+  &__header-left {
+    display: flex;
+    gap: 12px;
+  }
+
+  &__title-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  &__title-icon {
+    $size: 24px;
+
+    width: $size;
+    height: $size;
+  }
+
+  &__title {
+    @include title20px;
+  }
+
+  &__address-wrapper {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  &__address-icon {
+    $size: 12px;
+
+    width: $size;
+    height: $size;
+  }
+
+  &__address {
+    color: $color-gray-500;
+    font-size: $text-xs;
+  }
+
+  &__header-right {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-end;
+    width: 300px;
 
     @media (max-width: $breakpoint-sp) {
-      grid-template-columns: 1fr;
-    }
-
-    &__card {
-      padding: 16px;
-      background-color: $color-gray-50;
-      border: 1px solid $color-gray-200;
-      border-radius: 12px;
-    }
-
-    &__label {
-      margin-bottom: 6px;
-      color: $color-gray-500;
-      font-size: $text-sm;
-    }
-
-    &__value {
-      @include title14px;
+      align-items: stretch;
+      width: 100%;
     }
   }
 
-  .assessment-building {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-
-    @media (max-width: $breakpoint-sp) {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    &__card {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      align-items: center;
-      padding: 16px;
-      text-align: center;
-      background-color: $color-gray-50;
-      border: 1px solid $color-gray-200;
-      border-radius: 12px;
-    }
-
-    &__label {
-      margin-bottom: 6px;
-      color: $color-gray-500;
-      font-size: $text-sm;
-    }
-
-    &__value {
-      @include title14px;
-    }
-
-    &__icon {
-      $size: 28px;
-
-      width: $size;
-      height: $size;
-      color: $color-gray-700;
-    }
+  &__person-info {
+    display: flex;
+    gap: 20px;
   }
+
+  &__person-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__text {
+    font-size: $text-sm;
+  }
+
+  hr {
+    margin: 8px 0;
+    border: 0;
+    border-top: 1px solid $color-gray-200;
+  }
+}
+
+.assessment-timeline {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+
+  @media (max-width: $breakpoint-sp) {
+    grid-template-columns: 1fr;
+  }
+
+  &__card {
+    padding: 16px;
+    background-color: $color-gray-50;
+    border: 1px solid $color-gray-200;
+    border-radius: 12px;
+  }
+
+  &__label {
+    margin-bottom: 6px;
+    color: $color-gray-500;
+    font-size: $text-sm;
+  }
+
+  &__value {
+    @include title14px;
+  }
+}
+
+.assessment-building {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+
+  @media (max-width: $breakpoint-sp) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    padding: 16px;
+    text-align: center;
+    background-color: $color-gray-50;
+    border: 1px solid $color-gray-200;
+    border-radius: 12px;
+  }
+
+  &__label {
+    margin-bottom: 6px;
+    color: $color-gray-500;
+    font-size: $text-sm;
+  }
+
+  &__value {
+    @include title14px;
+  }
+
+  &__icon {
+    $size: 28px;
+
+    width: $size;
+    height: $size;
+    color: $color-gray-700;
+  }
+}
 </style>

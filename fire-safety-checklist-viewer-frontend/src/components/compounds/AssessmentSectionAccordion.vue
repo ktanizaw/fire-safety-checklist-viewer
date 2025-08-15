@@ -1,32 +1,32 @@
 <script lang="ts" setup>
-  import { Tooltip } from 'floating-vue';
-  import ProgressBar from '@/components/atoms/ProgressBar.vue';
-  import { graphql, getFragmentData, type FragmentType } from '@/gql';
-  import StatusTip from '@/components/atoms/StatusTip.vue';
+import { Tooltip } from 'floating-vue';
+import ProgressBar from '@/components/atoms/ProgressBar.vue';
+import { graphql, getFragmentData, type FragmentType } from '@/gql';
+import StatusTip from '@/components/atoms/StatusTip.vue';
 
-  const assessmentSectionAccordionFragment = graphql(`
-    fragment AssessmentSectionAccordion on AssessmentSection {
-      id
-      title
-      description
-      order
-      completionPercentage
-      pendingActionCount
-    }
-  `);
+const assessmentSectionAccordionFragment = graphql(`
+  fragment AssessmentSectionAccordion on AssessmentSection {
+    id
+    title
+    description
+    order
+    completionPercentage
+    pendingActionCount
+  }
+`);
 
-  const props = defineProps<{
-    maskedAssessmentSectionAccordion: FragmentType<
-      typeof assessmentSectionAccordionFragment
-    >;
-  }>();
+const props = defineProps<{
+  maskedAssessmentSectionAccordion: FragmentType<
+    typeof assessmentSectionAccordionFragment
+  >;
+}>();
 
-  const sectionData = getFragmentData(
-    assessmentSectionAccordionFragment,
-    props.maskedAssessmentSectionAccordion,
-  );
+const sectionData = getFragmentData(
+  assessmentSectionAccordionFragment,
+  props.maskedAssessmentSectionAccordion,
+);
 
-  const isOpen = ref(false);
+const isOpen = ref(false);
 </script>
 
 <template>
@@ -84,87 +84,87 @@
 </template>
 
 <style lang="scss" scoped>
-  .assessment-section {
+.assessment-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid $color-gray-200;
+  border-radius: 10px;
+
+  &__item {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-    border: 1px solid $color-gray-200;
-    border-radius: 10px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    cursor: pointer;
 
-    &__item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 15px;
-      cursor: pointer;
-
-      &:hover {
-        background-color: $color-gray-100;
-      }
-    }
-
-    &__item-left {
-      display: flex;
-      gap: 8px;
-      align-items: start;
-    }
-
-    &__item-right {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    &__item-title-wrapper {
-      display: flex;
-      gap: 4px;
-      align-items: center;
-
-      @include title18px;
-
-      @media (min-width: $breakpoint-sp) {
-        @include title16px;
-      }
-    }
-
-    &__progress-bar {
-      width: 150px;
-    }
-
-    &__pending-action-count {
-      display: flex;
-      gap: 4px;
-      align-items: center;
-      padding: 2px 4px;
-      color: $color-white;
-      font-size: $text-xxs;
-      background-color: $color-red-deep;
-      border-radius: 4px;
-    }
-
-    &__help-icon {
-      $size: 18px;
-
-      width: $size;
-      height: $size;
-      color: $color-gray-600;
-    }
-
-    &__help-text {
-      color: $color-white;
-      font-size: $text-xxs;
-    }
-
-    &__chevron-icon {
-      $size: 18px;
-
-      width: $size;
-      height: $size;
-      color: $color-gray-600;
-    }
-
-    &__content {
-      padding: 20px;
+    &:hover {
+      background-color: $color-gray-100;
     }
   }
+
+  &__item-left {
+    display: flex;
+    gap: 8px;
+    align-items: start;
+  }
+
+  &__item-right {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  &__item-title-wrapper {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+
+    @include title18px;
+
+    @media (min-width: $breakpoint-sp) {
+      @include title16px;
+    }
+  }
+
+  &__progress-bar {
+    width: 150px;
+  }
+
+  &__pending-action-count {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    padding: 2px 4px;
+    color: $color-white;
+    font-size: $text-xxs;
+    background-color: $color-red-deep;
+    border-radius: 4px;
+  }
+
+  &__help-icon {
+    $size: 18px;
+
+    width: $size;
+    height: $size;
+    color: $color-gray-600;
+  }
+
+  &__help-text {
+    color: $color-white;
+    font-size: $text-xxs;
+  }
+
+  &__chevron-icon {
+    $size: 18px;
+
+    width: $size;
+    height: $size;
+    color: $color-gray-600;
+  }
+
+  &__content {
+    padding: 20px;
+  }
+}
 </style>

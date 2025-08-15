@@ -2,9 +2,5 @@
   "semi": true,
   "arrowParens": "always",
   "singleQuote": true,
-  "trailingComma": "all",
-  "vueIndentScriptAndStyle": true,
-  "htmlWhitespaceSensitivity": "css",
-  "bracketSameLine": false,
-  "singleAttributePerLine": false
+  "trailingComma": "all"
 }

@@ -1,77 +1,77 @@
 <script lang="ts" setup>
-  import { graphql } from '@/gql';
-  import AssessmentCard from '@/components/compounds/AssessmentCard.vue';
-  import SelectBox from '@/components/atoms/SelectBox.vue';
-  import { STATUS_OPTIONS } from '@/libs/assessment/status';
-  import { SortOrder } from '@/gql/graphql';
-  import LoadingSpinner from '@/components/atoms/LoadingSpinner.vue';
+import { graphql } from '@/gql';
+import AssessmentCard from '@/components/compounds/AssessmentCard.vue';
+import SelectBox from '@/components/atoms/SelectBox.vue';
+import { STATUS_OPTIONS } from '@/libs/assessment/status';
+import { SortOrder } from '@/gql/graphql';
+import LoadingSpinner from '@/components/atoms/LoadingSpinner.vue';
 
-  const assessmentIndexDocument = graphql(`
-    query assessmentIndex($filter: AssessmentFilter, $sort: AssessmentSort) {
-      assessments(filter: $filter, sort: $sort) {
-        pendingActionCount
-        id
-        ...AssessmentCard
-      }
+const assessmentIndexDocument = graphql(`
+  query assessmentIndex($filter: AssessmentFilter, $sort: AssessmentSort) {
+    assessments(filter: $filter, sort: $sort) {
+      pendingActionCount
+      id
+      ...AssessmentCard
     }
-  `);
+  }
+`);
 
-  const {
-    $urql: { client },
-  } = useNuxtApp();
+const {
+  $urql: { client },
+} = useNuxtApp();
 
-  const statusValue = ref<string>('');
-  const percentageValue = ref<Maybe<SortOrder>>(null);
+const statusValue = ref<string>('');
+const percentageValue = ref<Maybe<SortOrder>>(null);
 
-  const { data, refresh, pending } = await useRequiredAsyncData(
-    'assessment-index',
-    async () => {
-      const { data: queryData, error } = await client.query(
-        assessmentIndexDocument,
-        {
-          filter: {
-            status: statusValue.value,
-          },
-          sort: {
-            overallCompletionPercentage: percentageValue.value,
-          },
+const { data, refresh, pending } = await useRequiredAsyncData(
+  'assessment-index',
+  async () => {
+    const { data: queryData, error } = await client.query(
+      assessmentIndexDocument,
+      {
+        filter: {
+          status: statusValue.value,
         },
-      );
-      if (error || !queryData) {
-        throw new Error(error?.message || 'Failed to fetch assessmentIndex');
-      }
-
-      return queryData;
-    },
-  );
-
-  const shouldShowPendingActions = computed(() => {
-    if (!data.value) return false;
-    return (
-      data.value?.assessments.reduce(
-        (acc, assessment) => acc + (assessment.pendingActionCount ?? 0),
-        0,
-      ) > 0
+        sort: {
+          overallCompletionPercentage: percentageValue.value,
+        },
+      },
     );
-  });
+    if (error || !queryData) {
+      throw new Error(error?.message || 'Failed to fetch assessmentIndex');
+    }
 
-  const pendingActionCount = computed(() => {
-    if (!data.value) return 0;
-    return data.value?.assessments.reduce(
+    return queryData;
+  },
+);
+
+const shouldShowPendingActions = computed(() => {
+  if (!data.value) return false;
+  return (
+    data.value?.assessments.reduce(
       (acc, assessment) => acc + (assessment.pendingActionCount ?? 0),
       0,
-    );
-  });
+    ) > 0
+  );
+});
 
-  const percentageOptions = [
-    { label: 'Default', value: null },
-    { label: 'Descending', value: SortOrder.Desc },
-    { label: 'Ascending', value: SortOrder.Asc },
-  ];
+const pendingActionCount = computed(() => {
+  if (!data.value) return 0;
+  return data.value?.assessments.reduce(
+    (acc, assessment) => acc + (assessment.pendingActionCount ?? 0),
+    0,
+  );
+});
 
-  const refetchData = () => {
-    refresh();
-  };
+const percentageOptions = [
+  { label: 'Default', value: null },
+  { label: 'Descending', value: SortOrder.Desc },
+  { label: 'Ascending', value: SortOrder.Asc },
+];
+
+const refetchData = () => {
+  refresh();
+};
 </script>
 
 <template>
@@ -130,96 +130,96 @@
 </template>
 
 <style lang="scss" scoped>
-  .page {
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+
+  &__header {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    padding: 20px;
+    gap: 10px;
+  }
 
-    &__header {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+  &__title {
+    @include title24px;
+  }
+
+  &__description {
+    color: $color-gray-500;
+  }
+
+  &__assessments {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+
+    @media (min-width: $breakpoint-sp) {
+      grid-template-columns: repeat(2, 1fr);
     }
 
-    &__title {
-      @include title24px;
-    }
-
-    &__description {
-      color: $color-gray-500;
-    }
-
-    &__assessments {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 15px;
-
-      @media (min-width: $breakpoint-sp) {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      @media (width >= 1024px) {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    &__container {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    &__content {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    &__content-header {
-      display: flex;
-      gap: 15px;
-      align-items: center;
-    }
-
-    &__showing {
-      color: $color-gray-500;
-      font-size: $text-sm;
-    }
-
-    &__pending-actions {
-      padding: 2px 4px;
-      color: $color-white;
-      font-size: $text-xs;
-      background-color: $color-red-deep;
-      border-radius: 4px;
-    }
-
-    &__filter {
-      display: flex;
-      gap: 10px;
-    }
-
-    &__select-box {
-      width: 150px;
-    }
-
-    &__loading {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 50dvh;
+    @media (width >= 1024px) {
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 
-  // フェードアニメーション
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: opacity 0.3s ease;
+  &__container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
   }
 
-  .fade-enter-from,
-  .fade-leave-to {
-    opacity: 0;
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
   }
+
+  &__content-header {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+
+  &__showing {
+    color: $color-gray-500;
+    font-size: $text-sm;
+  }
+
+  &__pending-actions {
+    padding: 2px 4px;
+    color: $color-white;
+    font-size: $text-xs;
+    background-color: $color-red-deep;
+    border-radius: 4px;
+  }
+
+  &__filter {
+    display: flex;
+    gap: 10px;
+  }
+
+  &__select-box {
+    width: 150px;
+  }
+
+  &__loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50dvh;
+  }
+}
+
+// フェードアニメーション
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
 </style>

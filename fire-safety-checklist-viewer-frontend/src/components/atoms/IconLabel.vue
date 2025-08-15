@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-  defineProps<{
-    icon: string;
-    text: string;
-  }>();
+defineProps<{
+  icon: string;
+  text: string;
+}>();
 </script>
 
 <template>
@@ -13,13 +13,13 @@
 </template>
 
 <style lang="scss" scoped>
-  .icon-label {
-    display: flex;
-    gap: 5px;
-    align-items: center;
+.icon-label {
+  display: flex;
+  gap: 5px;
+  align-items: center;
 
-    &__text {
-      font-size: $text-sm;
-    }
+  &__text {
+    font-size: $text-sm;
   }
+}
 </style>
