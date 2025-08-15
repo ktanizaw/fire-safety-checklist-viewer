@@ -248,10 +248,10 @@ const refetchData = () => {
     gap: 10px;
 
     @media (min-width: $breakpoint-sp) {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(1, 1fr);
     }
 
-    @media (width >= 1024px) {
+    @media (width >= 800px) {
       grid-template-columns: repeat(3, 1fr);
     }
   }
@@ -275,7 +275,7 @@ const refetchData = () => {
     }
 
     @media (width >= 1024px) {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
     }
   }
 
