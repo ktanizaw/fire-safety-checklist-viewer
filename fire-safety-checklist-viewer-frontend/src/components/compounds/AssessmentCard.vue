@@ -155,6 +155,7 @@ const toAssessmentDetail = () => {
   }
 
   &__pending-actions-text {
+    color: $color-red;
     font-size: $text-sm;
   }
 

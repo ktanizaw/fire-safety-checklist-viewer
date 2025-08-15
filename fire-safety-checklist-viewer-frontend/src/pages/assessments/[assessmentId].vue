@@ -118,6 +118,7 @@ const closeActionItemModal = () => {
 </template>
 <style lang="scss" scoped>
 .page {
+  margin-bottom: 50px;
   padding: 20px;
 
   &__container {

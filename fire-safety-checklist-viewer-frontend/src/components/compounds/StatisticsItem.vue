@@ -21,7 +21,6 @@ defineProps<{
   display: flex;
   gap: 10px;
   align-items: center;
-  width: 100%;
   padding: 15px 20px;
   border: 1px solid $color-gray-200;
   border-radius: 10px;

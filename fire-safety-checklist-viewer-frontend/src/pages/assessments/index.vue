@@ -243,8 +243,17 @@ const refetchData = () => {
   }
 
   &__statistics-data {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 10px;
+
+    @media (min-width: $breakpoint-sp) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (width >= 1024px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 
   &__status-summary {
@@ -257,8 +266,17 @@ const refetchData = () => {
   }
 
   &__status-summary-cards {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 10px;
+
+    @media (min-width: $breakpoint-sp) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (width >= 1024px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 
   &__assessments {

@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import StatusTip from '@/components/atoms/StatusTip.vue';
 import type { ActionItem } from '@/gql/graphql';
-import { getActionItemStatusData } from '@/libs/assessment/status';
+import {
+  getActionItemStatusData,
+  getActionItemPriorityData,
+} from '@/libs/assessment/status';
 
 defineProps<{
   actionItem: ActionItem;
@@ -49,7 +52,12 @@ defineEmits(['close']);
       <div class="action-item-modal__grid">
         <div class="action-item-modal__cell">
           <p class="action-item-modal__label">Priority</p>
-          <p class="action-item-modal__value">{{ actionItem.priority }}</p>
+          <p
+            class="action-item-modal__value"
+            :class="`action-item-modal__value--${getActionItemPriorityData(actionItem.priority).color}`"
+          >
+            {{ getActionItemPriorityData(actionItem.priority).text }}
+          </p>
         </div>
         <div class="action-item-modal__cell">
           <p class="action-item-modal__label">Status</p>
@@ -160,10 +168,20 @@ defineEmits(['close']);
   }
 
   &__value {
-    color: $color-gray-900;
     font-size: $text-sm;
-    line-height: 1.4;
     white-space: pre-wrap;
+
+    &--deep-red {
+      color: $color-red-deep;
+    }
+
+    &--red {
+      color: $color-red;
+    }
+
+    &--yellow {
+      color: $color-yellow;
+    }
   }
 }
 </style>

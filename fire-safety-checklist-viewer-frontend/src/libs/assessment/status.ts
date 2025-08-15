@@ -17,6 +17,12 @@ type ActionItemStatus = {
   text: ActionItemStatusText;
 };
 
+type ActionItemPriorityColor = 'deep-red' | 'red' | 'yellow';
+type ActionItemPriority = {
+  color: ActionItemPriorityColor;
+  text: string;
+};
+
 export const ASSESSMENT_STATUS_OPTIONS = [
   { label: 'All Statuses', value: '' },
   { label: 'In Progress', value: 'in_progress' },
@@ -65,4 +71,16 @@ export const getAssessmentStatusData = (status: string): AssessmentStatus => {
       icon: 'mdi:clock-time-four-outline',
     }
   );
+};
+
+export const getActionItemPriorityData = (
+  priority: string,
+): ActionItemPriority => {
+  const map: Record<string, ActionItemPriority> = {
+    critical: { color: 'red', text: 'Critical' },
+    high: { color: 'red', text: 'High' },
+    medium: { color: 'yellow', text: 'Medium' },
+  };
+
+  return map[priority.toLowerCase()] ?? { color: 'yellow', text: priority };
 };
