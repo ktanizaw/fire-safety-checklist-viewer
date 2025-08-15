@@ -23,24 +23,27 @@
   const statusValue = ref<string>('');
   const percentageValue = ref<Maybe<SortOrder>>(null);
 
-  const { data, refresh, pending } = await useRequiredAsyncData(async () => {
-    const { data: queryData, error } = await client.query(
-      assessmentIndexDocument,
-      {
-        filter: {
-          status: statusValue.value,
+  const { data, refresh, pending } = await useRequiredAsyncData(
+    'assessment-index',
+    async () => {
+      const { data: queryData, error } = await client.query(
+        assessmentIndexDocument,
+        {
+          filter: {
+            status: statusValue.value,
+          },
+          sort: {
+            overallCompletionPercentage: percentageValue.value,
+          },
         },
-        sort: {
-          overallCompletionPercentage: percentageValue.value,
-        },
-      },
-    );
-    if (error || !queryData) {
-      throw new Error(error?.message || 'Failed to fetch assessmentIndex');
-    }
+      );
+      if (error || !queryData) {
+        throw new Error(error?.message || 'Failed to fetch assessmentIndex');
+      }
 
-    return queryData;
-  });
+      return queryData;
+    },
+  );
 
   const shouldShowPendingActions = computed(() => {
     if (!data.value) return false;

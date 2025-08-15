@@ -43,19 +43,22 @@
     params: { assessmentId },
   } = useRoute('assessments-assessmentId');
 
-  const { data, pending } = await useRequiredAsyncData(async () => {
-    const { data: queryData, error } = await client.query(
-      assessmentDetailDocument,
-      {
-        id: assessmentId,
-      },
-    );
+  const { data, pending } = await useRequiredAsyncData(
+    `assessment-detail-${assessmentId}`,
+    async () => {
+      const { data: queryData, error } = await client.query(
+        assessmentDetailDocument,
+        {
+          id: assessmentId,
+        },
+      );
 
-    if (error || !queryData) {
-      throw new Error(error?.message || 'Failed to fetch assessmentDetail');
-    }
-    return queryData;
-  });
+      if (error || !queryData) {
+        throw new Error(error?.message || 'Failed to fetch assessmentDetail');
+      }
+      return queryData;
+    },
+  );
 
   const isActionItemModalOpen = ref(false);
   const selectedActionItem = ref<ActionItem | null>(null);
