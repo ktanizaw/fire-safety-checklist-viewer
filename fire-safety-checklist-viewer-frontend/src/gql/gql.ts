@@ -18,7 +18,8 @@ type Documents = {
   '\n  fragment AssessmentInfo on Assessment {\n    id\n    buildingName\n    address\n    status\n    overallCompletionPercentage\n    lastUpdated\n    responsiblePerson\n    assessor\n    dateOfAssessment\n    useOfPremises\n    numberOfFloors\n    construction\n    maxOccupancy\n    nextReviewDate\n  }\n': typeof types.AssessmentInfoFragmentDoc;
   '\n  fragment AssessmentQuestion on AssessmentItem {\n    id\n    question\n    response\n    requiresAction\n    lastUpdated\n    helpText\n    notes\n  }\n': typeof types.AssessmentQuestionFragmentDoc;
   '\n  fragment AssessmentSectionAccordion on AssessmentSection {\n    id\n    title\n    description\n    order\n    completionPercentage\n    pendingActionCount\n  }\n': typeof types.AssessmentSectionAccordionFragmentDoc;
-  '\n  query assessmentDetail($id: ID!) {\n    assessmentById(id: $id) {\n      id\n      ...AssessmentInfo\n      sections {\n        id\n        ...AssessmentSectionAccordion\n        items {\n          id\n          ...AssessmentQuestion\n          actionItem {\n            id\n            deficiency\n            proposedAction\n            timescale\n            personResponsible\n            priority\n            status\n          }\n        }\n      }\n    }\n  }\n': typeof types.AssessmentDetailDocument;
+  '\n  fragment ActionItemModalContent on ActionItem {\n    id\n    deficiency\n    proposedAction\n    timescale\n    personResponsible\n    priority\n    status\n  }\n': typeof types.ActionItemModalContentFragmentDoc;
+  '\n  query assessmentDetail($id: ID!) {\n    assessmentById(id: $id) {\n      id\n      ...AssessmentInfo\n      sections {\n        id\n        ...AssessmentSectionAccordion\n        items {\n          id\n          ...AssessmentQuestion\n          actionItem {\n            id\n            ...ActionItemModalContent\n          }\n        }\n      }\n    }\n  }\n': typeof types.AssessmentDetailDocument;
   '\n  query assessmentStatistics {\n    assessments {\n      status\n      overallCompletionPercentage\n      pendingActionCount\n    }\n  }\n': typeof types.AssessmentStatisticsDocument;
   '\n  query assessmentIndex($filter: AssessmentFilter, $sort: AssessmentSort) {\n    assessments(filter: $filter, sort: $sort) {\n      id\n      pendingActionCount\n      ...AssessmentCard\n    }\n  }\n': typeof types.AssessmentIndexDocument;
 };
@@ -31,7 +32,9 @@ const documents: Documents = {
     types.AssessmentQuestionFragmentDoc,
   '\n  fragment AssessmentSectionAccordion on AssessmentSection {\n    id\n    title\n    description\n    order\n    completionPercentage\n    pendingActionCount\n  }\n':
     types.AssessmentSectionAccordionFragmentDoc,
-  '\n  query assessmentDetail($id: ID!) {\n    assessmentById(id: $id) {\n      id\n      ...AssessmentInfo\n      sections {\n        id\n        ...AssessmentSectionAccordion\n        items {\n          id\n          ...AssessmentQuestion\n          actionItem {\n            id\n            deficiency\n            proposedAction\n            timescale\n            personResponsible\n            priority\n            status\n          }\n        }\n      }\n    }\n  }\n':
+  '\n  fragment ActionItemModalContent on ActionItem {\n    id\n    deficiency\n    proposedAction\n    timescale\n    personResponsible\n    priority\n    status\n  }\n':
+    types.ActionItemModalContentFragmentDoc,
+  '\n  query assessmentDetail($id: ID!) {\n    assessmentById(id: $id) {\n      id\n      ...AssessmentInfo\n      sections {\n        id\n        ...AssessmentSectionAccordion\n        items {\n          id\n          ...AssessmentQuestion\n          actionItem {\n            id\n            ...ActionItemModalContent\n          }\n        }\n      }\n    }\n  }\n':
     types.AssessmentDetailDocument,
   '\n  query assessmentStatistics {\n    assessments {\n      status\n      overallCompletionPercentage\n      pendingActionCount\n    }\n  }\n':
     types.AssessmentStatisticsDocument,
@@ -81,8 +84,14 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query assessmentDetail($id: ID!) {\n    assessmentById(id: $id) {\n      id\n      ...AssessmentInfo\n      sections {\n        id\n        ...AssessmentSectionAccordion\n        items {\n          id\n          ...AssessmentQuestion\n          actionItem {\n            id\n            deficiency\n            proposedAction\n            timescale\n            personResponsible\n            priority\n            status\n          }\n        }\n      }\n    }\n  }\n',
-): (typeof documents)['\n  query assessmentDetail($id: ID!) {\n    assessmentById(id: $id) {\n      id\n      ...AssessmentInfo\n      sections {\n        id\n        ...AssessmentSectionAccordion\n        items {\n          id\n          ...AssessmentQuestion\n          actionItem {\n            id\n            deficiency\n            proposedAction\n            timescale\n            personResponsible\n            priority\n            status\n          }\n        }\n      }\n    }\n  }\n'];
+  source: '\n  fragment ActionItemModalContent on ActionItem {\n    id\n    deficiency\n    proposedAction\n    timescale\n    personResponsible\n    priority\n    status\n  }\n',
+): (typeof documents)['\n  fragment ActionItemModalContent on ActionItem {\n    id\n    deficiency\n    proposedAction\n    timescale\n    personResponsible\n    priority\n    status\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query assessmentDetail($id: ID!) {\n    assessmentById(id: $id) {\n      id\n      ...AssessmentInfo\n      sections {\n        id\n        ...AssessmentSectionAccordion\n        items {\n          id\n          ...AssessmentQuestion\n          actionItem {\n            id\n            ...ActionItemModalContent\n          }\n        }\n      }\n    }\n  }\n',
+): (typeof documents)['\n  query assessmentDetail($id: ID!) {\n    assessmentById(id: $id) {\n      id\n      ...AssessmentInfo\n      sections {\n        id\n        ...AssessmentSectionAccordion\n        items {\n          id\n          ...AssessmentQuestion\n          actionItem {\n            id\n            ...ActionItemModalContent\n          }\n        }\n      }\n    }\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

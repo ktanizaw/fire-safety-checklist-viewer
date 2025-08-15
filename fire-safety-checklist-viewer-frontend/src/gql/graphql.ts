@@ -162,6 +162,17 @@ export type AssessmentSectionAccordionFragment = {
   pendingActionCount?: number | null;
 } & { ' $fragmentName'?: 'AssessmentSectionAccordionFragment' };
 
+export type ActionItemModalContentFragment = {
+  __typename: 'ActionItem';
+  id: string;
+  deficiency: string;
+  proposedAction: string;
+  timescale: string;
+  personResponsible: string;
+  priority: string;
+  status: string;
+} & { ' $fragmentName'?: 'ActionItemModalContentFragment' };
+
 export type AssessmentDetailQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -179,16 +190,13 @@ export type AssessmentDetailQuery = {
           {
             __typename: 'AssessmentItem';
             id: string;
-            actionItem?: {
-              __typename: 'ActionItem';
-              id: string;
-              deficiency: string;
-              proposedAction: string;
-              timescale: string;
-              personResponsible: string;
-              priority: string;
-              status: string;
-            } | null;
+            actionItem?:
+              | ({ __typename: 'ActionItem'; id: string } & {
+                  ' $fragmentRefs'?: {
+                    ActionItemModalContentFragment: ActionItemModalContentFragment;
+                  };
+                })
+              | null;
           } & {
             ' $fragmentRefs'?: {
               AssessmentQuestionFragment: AssessmentQuestionFragment;
@@ -357,6 +365,31 @@ export const AssessmentSectionAccordionFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<AssessmentSectionAccordionFragment, unknown>;
+export const ActionItemModalContentFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'ActionItemModalContent' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'ActionItem' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'deficiency' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'proposedAction' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'timescale' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'personResponsible' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'priority' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'status' } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<ActionItemModalContentFragment, unknown>;
 export const AssessmentDetailDocument = {
   kind: 'Document',
   definitions: [
@@ -440,34 +473,11 @@ export const AssessmentDetailDocument = {
                                     name: { kind: 'Name', value: 'id' },
                                   },
                                   {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'deficiency' },
-                                  },
-                                  {
-                                    kind: 'Field',
+                                    kind: 'FragmentSpread',
                                     name: {
                                       kind: 'Name',
-                                      value: 'proposedAction',
+                                      value: 'ActionItemModalContent',
                                     },
-                                  },
-                                  {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'timescale' },
-                                  },
-                                  {
-                                    kind: 'Field',
-                                    name: {
-                                      kind: 'Name',
-                                      value: 'personResponsible',
-                                    },
-                                  },
-                                  {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'priority' },
-                                  },
-                                  {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'status' },
                                   },
                                 ],
                               },
@@ -556,6 +566,26 @@ export const AssessmentDetailDocument = {
           { kind: 'Field', name: { kind: 'Name', value: 'lastUpdated' } },
           { kind: 'Field', name: { kind: 'Name', value: 'helpText' } },
           { kind: 'Field', name: { kind: 'Name', value: 'notes' } },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'ActionItemModalContent' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'ActionItem' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'deficiency' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'proposedAction' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'timescale' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'personResponsible' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'priority' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'status' } },
         ],
       },
     },

@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import { graphql } from '@/gql';
+import { graphql, type FragmentType } from '@/gql';
 import AssessmentInfo from '@/components/compounds/AssessmentInfo.vue';
 import AssessmentSectionAccordion from '@/components/compounds/AssessmentSectionAccordion.vue';
 import BasicButton from '@/components/atoms/BasicButton.vue';
 import AssessmentQuestion from '@/components/compounds/AssessmentQuestion.vue';
 import ModalBase from '~/components/atoms/modal/ModalBase.vue';
 import ActionItemModalContent from '@/components/compounds/modal/ActionItemModalContent.vue';
-import type { ActionItem } from '@/gql/graphql';
 import LoadingSpinner from '@/components/atoms/LoadingSpinner.vue';
+import type { ActionItemModalContentFragmentDoc } from '@/gql/graphql';
 
 const assessmentDetailDocument = graphql(`
   query assessmentDetail($id: ID!) {
@@ -22,12 +22,7 @@ const assessmentDetailDocument = graphql(`
           ...AssessmentQuestion
           actionItem {
             id
-            deficiency
-            proposedAction
-            timescale
-            personResponsible
-            priority
-            status
+            ...ActionItemModalContent
           }
         }
       }
@@ -61,13 +56,15 @@ const { data, pending } = await useRequiredAsyncData(
 );
 
 const isActionItemModalOpen = ref(false);
-const selectedActionItem = ref<ActionItem | null>(null);
+const selectedActionItem =
+  ref<Maybe<FragmentType<typeof ActionItemModalContentFragmentDoc>>>(null);
 
-const openActionItemModal = (actionItem?: ActionItem | null) => {
-  if (actionItem) {
-    selectedActionItem.value = actionItem;
-    isActionItemModalOpen.value = true;
-  }
+const openActionItemModal = (
+  actionItem?: Maybe<FragmentType<typeof ActionItemModalContentFragmentDoc>>,
+) => {
+  if (!actionItem) return;
+  selectedActionItem.value = actionItem;
+  isActionItemModalOpen.value = true;
 };
 
 const closeActionItemModal = () => {
@@ -109,7 +106,7 @@ const closeActionItemModal = () => {
     <Teleport to="body">
       <ModalBase v-if="isActionItemModalOpen && selectedActionItem">
         <ActionItemModalContent
-          :action-item="selectedActionItem"
+          :masked-action-item-modal-content-fragment="selectedActionItem"
           @close="closeActionItemModal"
         />
       </ModalBase>

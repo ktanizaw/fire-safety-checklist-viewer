@@ -1,14 +1,33 @@
 <script lang="ts" setup>
 import StatusTip from '@/components/atoms/StatusTip.vue';
-import type { ActionItem } from '@/gql/graphql';
 import {
   getActionItemStatusData,
   getActionItemPriorityData,
 } from '@/libs/assessment/status';
+import { graphql, type FragmentType, getFragmentData } from '@/gql';
 
-defineProps<{
-  actionItem: ActionItem;
+const actionItemModalContentFragment = graphql(`
+  fragment ActionItemModalContent on ActionItem {
+    id
+    deficiency
+    proposedAction
+    timescale
+    personResponsible
+    priority
+    status
+  }
+`);
+
+const props = defineProps<{
+  maskedActionItemModalContentFragment: FragmentType<
+    typeof actionItemModalContentFragment
+  >;
 }>();
+
+const actionItem = getFragmentData(
+  actionItemModalContentFragment,
+  props.maskedActionItemModalContentFragment,
+);
 
 defineEmits(['close']);
 </script>
