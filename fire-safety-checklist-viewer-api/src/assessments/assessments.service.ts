@@ -54,10 +54,10 @@ export class AssessmentsService {
     });
   }
 
-  async getAllAssessments(
+  getAllAssessments(
     filter?: AssessmentFilter,
     sort?: AssessmentSort,
-  ): Promise<Assessment[]> {
+  ): Assessment[] {
     try {
       if (
         filter?.status &&
@@ -101,7 +101,7 @@ export class AssessmentsService {
     }
   }
 
-  async getAssessmentById(id: string): Promise<Assessment> {
+  getAssessmentById(id: string): Assessment {
     try {
       const assessment = mockAssessments.find(
         (assessment) => assessment.id === id,

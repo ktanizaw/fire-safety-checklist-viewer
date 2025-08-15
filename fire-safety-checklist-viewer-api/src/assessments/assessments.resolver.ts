@@ -11,32 +11,17 @@ export class AssessmentsResolver {
   constructor(private readonly assessmentsService: AssessmentsService) {}
 
   @Query(() => [Assessment])
-  async assessments(
+  assessments(
     @Args('filter', { type: () => AssessmentFilter, nullable: true })
     filter?: AssessmentFilter,
     @Args('sort', { type: () => AssessmentSort, nullable: true })
     sort?: AssessmentSort,
-  ): Promise<Assessment[]> {
-    try {
-      const result = await this.assessmentsService.getAllAssessments(
-        filter,
-        sort,
-      );
-      return result;
-    } catch (error) {
-      throw error;
-    }
+  ): Assessment[] {
+    return this.assessmentsService.getAllAssessments(filter, sort);
   }
 
   @Query(() => Assessment)
-  async assessmentById(
-    @Args('id', { type: () => ID }) id: string,
-  ): Promise<Assessment> {
-    try {
-      const result = await this.assessmentsService.getAssessmentById(id);
-      return result;
-    } catch (error) {
-      throw error;
-    }
+  assessmentById(@Args('id', { type: () => ID }) id: string): Assessment {
+    return this.assessmentsService.getAssessmentById(id);
   }
 }
