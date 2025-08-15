@@ -9,13 +9,21 @@ import FadeTransition from '@/components/transition/FadeTransition.vue';
 import StatisticsItem from '~/components/compounds/StatisticsItem.vue';
 import StatusSummaryCard from '~/components/compounds/StatusSummaryCard.vue';
 
+const assessmentStatisticsDocument = graphql(`
+  query assessmentStatistics {
+    assessments {
+      status
+      overallCompletionPercentage
+      pendingActionCount
+    }
+  }
+`);
+
 const assessmentIndexDocument = graphql(`
   query assessmentIndex($filter: AssessmentFilter, $sort: AssessmentSort) {
     assessments(filter: $filter, sort: $sort) {
-      pendingActionCount
       id
-      status
-      overallCompletionPercentage
+      pendingActionCount
       ...AssessmentCard
     }
   }
@@ -42,11 +50,52 @@ const { data, refresh, pending } = await useRequiredAsyncData(
         },
       },
     );
+
     if (error || !queryData) {
       throw new Error(error?.message || 'Failed to fetch assessmentIndex');
     }
 
-    return queryData;
+    const { data: statisticsData, error: statisticsError } = await client.query(
+      assessmentStatisticsDocument,
+      {},
+    );
+
+    if (statisticsError || !statisticsData) {
+      throw new Error(
+        statisticsError?.message || 'Failed to fetch assessmentStatistics',
+      );
+    }
+
+    return {
+      assessments: queryData.assessments,
+      statistics: {
+        totalCompletedAssessmentsCount: statisticsData.assessments.filter(
+          (assessment) => assessment.status === 'completed',
+        ).length,
+        totalInProgressAssessmentsCount: statisticsData.assessments.filter(
+          (assessment) => assessment.status === 'in_progress',
+        ).length,
+        totalDraftAssessmentsCount: statisticsData.assessments.filter(
+          (assessment) => assessment.status === 'draft',
+        ).length,
+        totalRequiresReviewAssessmentsCount: statisticsData.assessments.filter(
+          (assessment) => assessment.status === 'requires_review',
+        ).length,
+        overallProgressPercentage:
+          Math.round(
+            statisticsData.assessments.reduce(
+              (acc, assessment) =>
+                acc + (assessment.overallCompletionPercentage ?? 0),
+              0,
+            ) / statisticsData.assessments.length,
+          ) + '%',
+        totalAssessmentsCount: statisticsData.assessments.length,
+        pendingActionCount: statisticsData.assessments.reduce(
+          (acc, assessment) => acc + (assessment.pendingActionCount ?? 0),
+          0,
+        ),
+      },
+    };
   },
 );
 
@@ -68,55 +117,15 @@ const pendingActionCount = computed(() => {
   );
 });
 
-const PERCENTAGE_OPTIONS = [
-  { label: 'Default', value: null },
-  { label: 'Descending', value: SortOrder.Desc },
-  { label: 'Ascending', value: SortOrder.Asc },
+const COMPLETION_PERCENTAGE_OPTIONS = [
+  { label: 'Sort by Completion', value: null },
+  { label: 'Most Complete First', value: SortOrder.Desc },
+  { label: 'Least Complete First', value: SortOrder.Asc },
 ];
 
 const refetchData = () => {
   refresh();
 };
-
-const totalCompletedAssessmentsCount = computed(() => {
-  if (!data.value) return 0;
-  return data.value?.assessments.filter(
-    (assessment) => assessment.status === 'completed',
-  ).length;
-});
-
-const totalInProgressAssessmentsCount = computed(() => {
-  if (!data.value) return 0;
-  return data.value?.assessments.filter(
-    (assessment) => assessment.status === 'in_progress',
-  ).length;
-});
-
-const totalDraftAssessmentsCount = computed(() => {
-  if (!data.value) return 0;
-  return data.value?.assessments.filter(
-    (assessment) => assessment.status === 'draft',
-  ).length;
-});
-
-const totalRequiresReviewAssessmentsCount = computed(() => {
-  if (!data.value) return 0;
-  return data.value?.assessments.filter(
-    (assessment) => assessment.status === 'requires_review',
-  ).length;
-});
-
-const overallProgressPercentage = computed(() => {
-  if (!data.value) return 0;
-  const percentage = Math.round(
-    data.value?.assessments.reduce(
-      (acc, assessment) => acc + (assessment.overallCompletionPercentage ?? 0),
-      0,
-    ) / data.value?.assessments.length,
-  );
-
-  return percentage + '%';
-});
 </script>
 
 <template>
@@ -130,17 +139,17 @@ const overallProgressPercentage = computed(() => {
       <div class="page__statistics-data">
         <StatisticsItem
           title="Total Assessments"
-          :value="data.assessments.length"
+          :value="data.statistics.totalAssessmentsCount"
           icon="mdi:note-text-outline"
         />
         <StatisticsItem
           title="Overall Progress"
-          :value="overallProgressPercentage"
+          :value="data.statistics.overallProgressPercentage"
           icon="mdi:finance"
         />
         <StatisticsItem
           title="Pending Actions"
-          :value="pendingActionCount"
+          :value="data.statistics.pendingActionCount"
           icon="mdi:alert-outline"
         />
       </div>
@@ -149,16 +158,19 @@ const overallProgressPercentage = computed(() => {
         <div class="page__status-summary-cards">
           <StatusSummaryCard
             type="completed"
-            :value="totalCompletedAssessmentsCount"
+            :value="data.statistics.totalCompletedAssessmentsCount"
           />
           <StatusSummaryCard
             type="in_progress"
-            :value="totalInProgressAssessmentsCount"
+            :value="data.statistics.totalInProgressAssessmentsCount"
           />
-          <StatusSummaryCard type="draft" :value="totalDraftAssessmentsCount" />
+          <StatusSummaryCard
+            type="draft"
+            :value="data.statistics.totalDraftAssessmentsCount"
+          />
           <StatusSummaryCard
             type="requires_review"
-            :value="totalRequiresReviewAssessmentsCount"
+            :value="data.statistics.totalRequiresReviewAssessmentsCount"
           />
         </div>
       </div>
@@ -174,8 +186,8 @@ const overallProgressPercentage = computed(() => {
         />
         <SelectBox
           v-model:value="percentageValue"
-          :options="PERCENTAGE_OPTIONS"
-          placeholder="All Percentages"
+          :options="COMPLETION_PERCENTAGE_OPTIONS"
+          placeholder="Sort by completion rate"
           class="page__select-box"
           @update:value="refetchData"
         />
@@ -185,8 +197,8 @@ const overallProgressPercentage = computed(() => {
           <div class="page__content-header">
             <p class="page__showing">
               Showing {{ data.assessments.length }} of
-              {{ data.assessments.length }}
-              buildings
+              {{ data.statistics.totalAssessmentsCount }}
+              assessments
             </p>
             <span v-if="shouldShowPendingActions" class="page__pending-actions">
               {{ pendingActionCount }}
@@ -300,7 +312,7 @@ const overallProgressPercentage = computed(() => {
   }
 
   &__select-box {
-    width: 150px;
+    width: 180px;
   }
 
   &__loading {

@@ -204,6 +204,20 @@ export type AssessmentDetailQuery = {
   } & { ' $fragmentRefs'?: { AssessmentInfoFragment: AssessmentInfoFragment } };
 };
 
+export type AssessmentStatisticsQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type AssessmentStatisticsQuery = {
+  __typename: 'Query';
+  assessments: Array<{
+    __typename: 'Assessment';
+    status: string;
+    overallCompletionPercentage: number;
+    pendingActionCount?: number | null;
+  }>;
+};
+
 export type AssessmentIndexQueryVariables = Exact<{
   filter?: InputMaybe<AssessmentFilter>;
   sort?: InputMaybe<AssessmentSort>;
@@ -214,10 +228,8 @@ export type AssessmentIndexQuery = {
   assessments: Array<
     {
       __typename: 'Assessment';
-      pendingActionCount?: number | null;
       id: string;
-      status: string;
-      overallCompletionPercentage: number;
+      pendingActionCount?: number | null;
     } & {
       ' $fragmentRefs'?: { AssessmentCardFragment: AssessmentCardFragment };
     }
@@ -552,6 +564,42 @@ export const AssessmentDetailDocument = {
   AssessmentDetailQuery,
   AssessmentDetailQueryVariables
 >;
+export const AssessmentStatisticsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'assessmentStatistics' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'assessments' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'status' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'overallCompletionPercentage' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'pendingActionCount' },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AssessmentStatisticsQuery,
+  AssessmentStatisticsQueryVariables
+>;
 export const AssessmentIndexDocument = {
   kind: 'Document',
   definitions: [
@@ -607,15 +655,10 @@ export const AssessmentIndexDocument = {
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'pendingActionCount' },
-                },
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'status' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'overallCompletionPercentage' },
                 },
                 {
                   kind: 'FragmentSpread',
