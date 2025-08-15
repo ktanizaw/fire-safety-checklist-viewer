@@ -14,8 +14,9 @@ fire-safety-checklist-viewer/
 
 ### Prerequisites
 
-- Node.js (v18 or higher)
+- Node.js (v18 or higher) - Required for Nuxt 4, NestJS 11, and TypeScript 5.7+
 - npm, yarn, pnpm, or bun
+- No database required (uses mock data for demonstration)
 
 ### Backend (API) Setup
 
@@ -55,6 +56,8 @@ npm install
 
 3. Set up environment variables:
 
+Create a `.env` file in the frontend directory:
+
 ```bash
 # Create .env file
 echo "API_ENDPOINT=http://localhost:5001" > .env
@@ -86,3 +89,29 @@ The frontend will be available at `http://localhost:3000`
 - **SCSS** - Advanced CSS preprocessor
 - **URQL** - GraphQL client
 - **GraphQL Code Generator** - Type-safe GraphQL operations
+
+## 📋 Requirements & Assumptions
+
+### Requirements
+
+- Fire safety assessment management system
+- View and browse assessments
+- Track completion status and pending actions
+- Responsive design for various devices
+- Type-safe development with TypeScript
+
+### Assumptions Made
+
+- **Authentication**: No authentication system implemented (assumes internal use)
+- **User Roles**: Single user type (assessor/viewer)
+- **Real-time Updates**: Not implemented (manual refresh required)
+
+## ⚖️ Trade-offs & Future Improvements
+
+1. **Database Connection**: Using mock data instead of implementing a real database
+
+2. **GraphQL Introspection API Documentation**: Not implemented
+
+3. **CSV/PDF Export**: Export functionality not implemented
+
+4. **Search Functionality**: No search by building name or address
