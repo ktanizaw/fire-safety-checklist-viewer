@@ -25,6 +25,7 @@
     "@nuxt/icon": "^2.0.0",
     "@nuxt/image": "^1.11.0",
     "@urql/vue": "^2.0.0",
+    "@vueuse/core": "^13.6.0",
     "date-fns": "^4.1.0",
     "eslint": "^9.33.0",
     "floating-vue": "^5.2.2",

@@ -2,12 +2,14 @@
 import { graphql } from '@/gql';
 import AssessmentCard from '@/components/compounds/AssessmentCard.vue';
 import SelectBox from '@/components/atoms/SelectBox.vue';
+import SearchBox from '@/components/atoms/SearchBox.vue';
 import { ASSESSMENT_STATUS_OPTIONS } from '@/libs/assessment/status';
 import { SortOrder } from '@/gql/graphql';
 import LoadingSpinner from '@/components/atoms/LoadingSpinner.vue';
 import FadeTransition from '@/components/transition/FadeTransition.vue';
-import StatisticsItem from '~/components/compounds/StatisticsItem.vue';
-import StatusSummaryCard from '~/components/compounds/StatusSummaryCard.vue';
+import StatisticsItem from '@/components/compounds/StatisticsItem.vue';
+import StatusSummaryCard from '@/components/compounds/StatusSummaryCard.vue';
+import { useDebounceFn } from '@vueuse/core';
 
 const assessmentStatisticsDocument = graphql(`
   query assessmentStatistics {
@@ -35,6 +37,7 @@ const {
 
 const statusValue = ref<string>('');
 const percentageValue = ref<Maybe<SortOrder>>(null);
+const searchValue = ref<string>('');
 
 const { data, refresh, pending } = await useRequiredAsyncData(
   'assessment-index',
@@ -43,7 +46,8 @@ const { data, refresh, pending } = await useRequiredAsyncData(
       assessmentIndexDocument,
       {
         filter: {
-          status: statusValue.value,
+          status: statusValue.value || undefined,
+          searchQuery: searchValue.value || undefined,
         },
         sort: {
           overallCompletionPercentage: percentageValue.value,
@@ -123,9 +127,17 @@ const COMPLETION_PERCENTAGE_OPTIONS = [
   { label: 'Least Complete First', value: SortOrder.Asc },
 ];
 
-const refetchData = () => {
-  refresh();
+const refetchData = async () => {
+  await refresh();
 };
+
+const debouncedRefresh = useDebounceFn(async () => {
+  await refresh();
+}, 300);
+
+watch(searchValue, async () => {
+  await debouncedRefresh();
+});
 </script>
 
 <template>
@@ -177,6 +189,10 @@ const refetchData = () => {
     </div>
     <div class="page__container">
       <div class="page__filter">
+        <SearchBox
+          v-model:search-value="searchValue"
+          class="page__search-box"
+        />
         <SelectBox
           v-model:value="statusValue"
           :options="ASSESSMENT_STATUS_OPTIONS"
@@ -326,10 +342,16 @@ const refetchData = () => {
 
   &__filter {
     display: flex;
-    gap: 10px;
+    gap: 15px;
+    align-items: center;
+
+    @media (width <= 800px) {
+      flex-wrap: wrap;
+    }
   }
 
   &__select-box {
+    flex-shrink: 0;
     width: 180px;
   }
 
