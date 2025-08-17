@@ -113,5 +113,3 @@ The frontend will be available at `http://localhost:3000`
 2. **GraphQL Introspection API Documentation**: Not implemented
 
 3. **CSV/PDF Export**: Export functionality not implemented
-
-4. **Search Functionality**: No search by building name or address
