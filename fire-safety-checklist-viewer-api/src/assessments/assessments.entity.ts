@@ -35,6 +35,9 @@ registerEnumType(ActionItemStatus, {
 export class AssessmentFilter {
   @Field(() => String, { nullable: true })
   status?: string;
+
+  @Field(() => String, { nullable: true })
+  searchQuery?: string;
 }
 
 @InputType()

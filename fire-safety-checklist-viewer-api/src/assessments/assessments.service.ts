@@ -68,9 +68,26 @@ export class AssessmentsService {
         throw new BadRequestException(`Invalid status: ${filter.status}`);
       }
 
-      const filteredAssessments = filter?.status
-        ? mockAssessments.filter((a) => a.status === filter.status)
-        : mockAssessments;
+      const filteredAssessments = mockAssessments
+        .filter((assessment) => {
+          if (filter?.status) {
+            return assessment.status === filter.status;
+          }
+          return true;
+        })
+        .filter((assessment) => {
+          if (filter?.searchQuery) {
+            const searchQuery = filter.searchQuery.toLowerCase().trim();
+            const buildingName = assessment.buildingName.toLowerCase();
+            const address = assessment.address.toLowerCase();
+
+            return (
+              buildingName.includes(searchQuery) ||
+              address.includes(searchQuery)
+            );
+          }
+          return true;
+        });
 
       const sortedAssessments = this.sortAssessments(filteredAssessments, sort);
 

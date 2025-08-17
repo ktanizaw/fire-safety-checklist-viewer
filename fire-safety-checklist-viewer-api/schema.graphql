@@ -59,6 +59,7 @@ type Query {
 
 input AssessmentFilter {
   status: String
+  searchQuery: String
 }
 
 input AssessmentSort {
