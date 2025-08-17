@@ -90,6 +90,32 @@ The frontend will be available at `http://localhost:3000`
 - **URQL** - GraphQL client
 - **GraphQL Code Generator** - Type-safe GraphQL operations
 
+## 🔧 Technical Decisions
+
+### GraphQL over REST
+
+- **Limited Fields Requirement**: The overview page only needed specific fields, making GraphQL's field selection capability ideal for efficient data fetching
+- **Type Safety**: GraphQL Code Generator automatically generates TypeScript types for the frontend, enabling maintainable development with full type safety
+
+### SCSS over CSS Frameworks
+
+- **Development Speed**: Chose SCSS as the fastest styling technology within the limited development time
+- **Original Design**: Preferred creating a unique app design rather than using CSS frameworks that would result in similar-looking applications
+
+### ESLint over Biome
+
+- **Familiarity**: Selected ESLint due to familiarity with its configuration and setup process
+
+### Nuxt.js over Next.js
+
+- **Nuxt.js Expertise**: Had prior experience with Nuxt.js rather than Next.js, enabling faster development.
+Nuxt.js provides built-in features like auto-imports, file-based routing.
+
+### NestJS Backend Framework
+
+- **Position Requirements**: The applied backend position specifically required NestJS experience
+- **Learning Opportunity**: Wanted to gain hands-on experience with NestJS's modular architecture and dependency injection
+
 ## 📋 Requirements & Assumptions
 
 ### Requirements
